@@ -1,6 +1,2 @@
-# netlify.toml
 [functions]
     directory = "netlify/functions"
-    # Optional: Specify the Node.js runtime version if needed.
-    # This is good practice for consistency.
-    # node_bundler = "esbuild" # Uncomment if you want faster builds with esbuild
