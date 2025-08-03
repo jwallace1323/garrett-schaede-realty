@@ -14,8 +14,7 @@ exports.handler = async function(event, context) {
         apiKey: 'awgq6dp2w63ixkbw4kjt377u8',
         accessToken: '7w14e1fzp5g5al7v9ky0dgx89',
         feedId: 'awgq6dp2w63ixkbw4kjt377u8',
-        baseUrl: 'https://sparkapi.com/v1/listings', // Confirm this is the correct API endpoint
-    };
+        baseUrl: 'https://replication.sparkapi.com/v1/listings', // <--- Use the replication endpoint    };
 
     // Get search parameters from frontend query string
     const params = new URLSearchParams(event.queryStringParameters);
