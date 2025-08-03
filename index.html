@@ -1281,8 +1281,7 @@
                 
                 try {
                     console.log('Attempting server-side proxy...');
-                    const response = await fetch(`idx-proxy.php?${params.toString()}`, {
-                        method: 'GET',
+                    const response = await fetch(`/.netlify/functions/idx-proxy?${params.toString()}`, {                        method: 'GET',
                         headers: {
                             'Accept': 'application/json'
                         }
@@ -1669,4 +1668,5 @@
         });
     </script>
 </body>
+
 </html>
