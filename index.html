@@ -1,3 +1,12 @@
+I will debug and fix the `index.html` file you've provided.
+
+The main issue I'm looking to solve based on our previous conversation and the "Unexpected identifier 'params'" error is the accidental inclusion of Node.js-specific `exports.handler` code within your browser-side JavaScript in `index.html`. This causes a `SyntaxError` because `exports` is not a valid keyword in a browser environment.
+
+I'll also re-implement the `escapeHTML` function and ensure it's applied to dynamic content, which I had added in an earlier iteration to prevent HTML injection bugs that could cause code to show.
+
+Here's the corrected `index.html`:
+
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -209,7 +218,7 @@
 
         .hero {
             height: 100vh;
-            /* To easily insert your own photo, replace 'YOUR_IMAGE_URL_HERE.jpg' below with the path to your image */
+            /* To easily insert your own photo, replace 'water photo.jpg' below with the path to your image */
             /* Example: url('images/my-grand-lake-hero.jpg') or a full URL */
             background: linear-gradient(rgba(13, 40, 94, 0.5), rgba(26, 58, 107, 0.5)), url('water photo.jpg') center center/cover no-repeat;
             display: flex;
@@ -817,8 +826,6 @@
             .agent-photo {
                 width: 280px;
                 height: 280px;
-                padding: 10px;
-                border: 3px solid var(--background-light);
             }
             .idx-search-container {
                 padding: 1.8rem;
@@ -1183,6 +1190,14 @@
     </footer>
 
     <script>
+        // Utility function to escape HTML to prevent code injection and display issues
+        function escapeHTML(str) {
+            if (typeof str !== 'string') return ''; // Handle non-string inputs
+            var div = document.createElement('div');
+            div.appendChild(document.createTextNode(str));
+            return div.innerHTML;
+        }
+
         // IDX Configuration for Northeast Oklahoma Board of Realtors
         const IDX_CONFIG = {
             apiKey: 'awgq6dp2w63ixkbw4kjt377u8',
@@ -1281,7 +1296,9 @@
                 
                 try {
                     console.log('Attempting server-side proxy...');
-                    const response = await fetch(`/.netlify/functions/idx-proxy?${params.toString()}`, {                        method: 'GET',
+                    // CHANGED: Calling the Netlify Function endpoint
+                    const response = await fetch(`/.netlify/functions/idx-proxy?${params.toString()}`, {
+                        method: 'GET',
                         headers: {
                             'Accept': 'application/json'
                         }
@@ -1289,11 +1306,12 @@
                     
                     if (response.ok) {
                         const result = await response.json();
+                        // Check for demo_mode flag from the function, or if data structure is unexpected
                         if (result && !result.demo_mode && !result.error && (result.listings || result.results || Array.isArray(result.data))) {
                             data = result;
-                            console.log('Server proxy success:', data);
+                            console.log('Netlify Function proxy success:', data);
                         } else {
-                            console.log('Server proxy returned demo mode, error, or no valid data structure:', result);
+                            console.log('Netlify Function proxy returned demo mode, error, or no valid data structure:', result);
                             useDemo = true;
                         }
                     } else {
@@ -1301,7 +1319,7 @@
                         useDemo = true;
                     }
                 } catch (proxyError) {
-                    console.error('Server proxy failed:', proxyError.message);
+                    console.error('Server proxy failed (network error or unhandled):', proxyError.message);
                     useDemo = true;
                 }
                 
@@ -1331,10 +1349,9 @@
                     <h3 style="font-family: 'Playfair Display', serif; margin-bottom: 1rem; font-size: 1.8rem;">Demo Mode - Live MLS Integration Ready</h3>
                     <p style="text-align: left; margin: 1.5rem 0; font-size: 1.05rem; line-height: 1.6;">
                         • Direct browser-to-MLS API calls are typically blocked by browser security policies (CORS).<br>
-                        • This is a standard security measure for real estate websites.<br>
-                        • Your provided IDX credentials are valid and correctly configured for use.
+                        • This is a standard security measure for real estate websites.
                     </p>
-                    <p style="font-size: 1.1rem; font-weight: 500;"><strong>To display live MLS data:</strong> Please upload the provided <code>idx-proxy.php</code> file to your web server alongside your <code>index.html</code>.</p>
+                    <p style="font-size: 1.1rem; font-weight: 500;"><strong>To display live MLS data:</strong> Please ensure your Netlify Function (<code>netlify/functions/idx-proxy.js</code>) and <code>netlify.toml</code> file are correctly configured and deployed.</p>
                     <small style="opacity: 0.8; margin-top: 1rem; display: block;">(Search functionality works even with demo data)</small>
                 </div>
             `;
@@ -1383,26 +1400,27 @@
                     const baths = property.bathrooms || property.baths || property.BathroomsTotal || 'N/A';
                     const sqft = property.squareFeet || property.sqft || property.LivingArea || null;
                     const image = property.photos?.[0]?.url || property.image || property.Media?.[0]?.MediaURL || null;
-                    const description = property.description || property.remarks || property.PublicRemarks || 'Beautiful property in a desirable location.';
+                    // Escape HTML in description to prevent code from showing
+                    const description = escapeHTML(property.description || property.remarks || property.PublicRemarks || 'Beautiful property in a desirable location.');
                     const propertyType = property.propertyType || property.PropertyType || 'For Sale'; // Default for badge
 
                     propertyCards += `
                         <div class="property-card">
                             <div class="property-image">
-                                ${image ? `<img src="${image}" alt="Property Image">` : '<i class="fas fa-home"></i>'}
-                                <div class="property-badge">${propertyType === 'Land' ? 'Land For Sale' : 'For Sale'}</div>
+                                ${image ? `<img src="${escapeHTML(image)}" alt="Property Image">` : '<i class="fas fa-home"></i>'}
+                                <div class="property-badge">${escapeHTML(propertyType === 'Land' ? 'Land For Sale' : 'For Sale')}</div>
                             </div>
                             <div class="property-details">
                                 <div class="property-price">${formatPrice(price)}</div>
-                                <div class="property-address">${address}</div>
+                                <div class="property-address">${escapeHTML(address)}</div>
                                 <div class="property-features">
                                     <div class="feature">
                                         <i class="fas fa-bed"></i>
-                                        <span>${beds} Beds</span>
+                                        <span>${escapeHTML(String(beds))} Beds</span>
                                     </div>
                                     <div class="feature">
                                         <i class="fas fa-bath"></i>
-                                        <span>${baths} Baths</span>
+                                        <span>${escapeHTML(String(baths))} Baths</span>
                                     </div>
                                     ${sqft ? `
                                     <div class="feature">
