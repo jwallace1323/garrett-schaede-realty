@@ -1,12 +1,3 @@
-I will debug and fix the `index.html` file you've provided.
-
-The main issue I'm looking to solve based on our previous conversation and the "Unexpected identifier 'params'" error is the accidental inclusion of Node.js-specific `exports.handler` code within your browser-side JavaScript in `index.html`. This causes a `SyntaxError` because `exports` is not a valid keyword in a browser environment.
-
-I'll also re-implement the `escapeHTML` function and ensure it's applied to dynamic content, which I had added in an earlier iteration to prevent HTML injection bugs that could cause code to show.
-
-Here's the corrected `index.html`:
-
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -990,8 +981,6 @@ Here's the corrected `index.html`:
                     <p>With over ten years of experience, Garrett Schaede is a leading real estate agent for properties on Grand Lake o' the Cherokees. His strong knowledge of the local market, including Grove, Oklahoma, combined with a commitment to excellent service, ensures a smooth and successful experience for every client.</p>
                     
                     <p>Garrett specializes in lakefront homes, luxury properties, and investment opportunities across the Grand Lake area of Oklahoma. He helps clients find their perfect property, from cozy lakeside cabins to large waterfront estates.</p>
-                    
-                    <p>Whether you're looking for a primary residence, a vacation home, or an investment property, Garrett's integrity, innovative approach, and dedication make him the ideal partner for your real estate journey on Grand Lake, Oklahoma.</p>
                 </div>
             </div>
         </div>
@@ -1203,13 +1192,6 @@ Here's the corrected `index.html`:
             apiKey: 'awgq6dp2w63ixkbw4kjt377u8',
             accessToken: '7w14e1fzp5g5al7v9ky0dgx89',
             feedId: 'awgq6dp2w63ixkbw4kjt377u8',
-            // baseUrl: 'https://api.idxhome.com/v1/search', // This endpoint is problematic due to CORS
-            // The proxy handles the correct endpoint for the server
-            endpoints: [
-                // 'https://api.idxhome.com/v1/search', // Kept for reference but likely blocked by CORS
-                // 'https://feed.idxhome.com/listing/search', // Kept for reference
-                // 'https://api.reso.org/search' // Kept for reference
-            ]
         };
 
         // Auto-load properties when page loads
@@ -1290,14 +1272,11 @@ Here's the corrected `index.html`:
                 if (filters.propertyType) params.append('propertytype', filters.propertyType);
                 if (filters.city) params.append('city', filters.city); // Pass city filter
 
-                // Try server-side proxy first (if available)
                 let data = null;
-                let useDemo = false;
                 
                 try {
-                    console.log('Attempting server-side proxy...');
-                    // CHANGED: Calling the Netlify Function endpoint
-                    const response = await fetch(`/.netlify/functions/idx-proxy?${params.toString()}`, {
+                    console.log('Attempting Netlify Function proxy...');
+                    const response = await fetch(`${window.location.origin}/.netlify/functions/idx-proxy?${params.toString()}`, {
                         method: 'GET',
                         headers: {
                             'Accept': 'application/json'
@@ -1306,27 +1285,22 @@ Here's the corrected `index.html`:
                     
                     if (response.ok) {
                         const result = await response.json();
-                        // Check for demo_mode flag from the function, or if data structure is unexpected
-                        if (result && !result.demo_mode && !result.error && (result.listings || result.results || Array.isArray(result.data))) {
-                            data = result;
+                        if (result && result.D && result.D.Results && Array.isArray(result.D.Results)) {
+                            data = result.D.Results;
                             console.log('Netlify Function proxy success:', data);
                         } else {
-                            console.log('Netlify Function proxy returned demo mode, error, or no valid data structure:', result);
-                            useDemo = true;
+                            console.log('API response was not in the expected format or was an error:', result);
                         }
                     } else {
                         console.log('Server proxy response not OK:', response.status);
-                        useDemo = true;
                     }
                 } catch (proxyError) {
-                    console.error('Server proxy failed (network error or unhandled):', proxyError.message);
-                    useDemo = true;
+                    console.error('Netlify Function proxy failed (network error or unhandled):', proxyError.message);
                 }
                 
-                if (data) {
+                if (data && data.length > 0) {
                     await displayProperties(data);
                 } else {
-                    // Show demo properties with explanation if proxy failed
                     showDemoPropertiesWithExplanation(filters);
                 }
                 
@@ -1365,18 +1339,8 @@ Here's the corrected `index.html`:
             const grid = document.getElementById('properties-grid');
             
             try {
-                let properties = [];
-                
-                if (data.listings) { // Common structure from some IDX feeds
-                    properties = data.listings;
-                } else if (data.results) { // Another common structure
-                    properties = data.results;
-                } else if (Array.isArray(data)) { // If data is already an array of listings
-                    properties = data;
-                } else if (data.data && Array.isArray(data.data)) { // RESO API or similar
-                    properties = data.data;
-                }
-                
+                let properties = data;
+
                 if (!properties || properties.length === 0) {
                     grid.innerHTML = `
                         <div class="error-state">
@@ -1394,15 +1358,14 @@ Here's the corrected `index.html`:
                 // Limit to 12 properties for a cleaner display
                 properties.slice(0, 12).forEach(property => {
                     // Adapt to common naming conventions found in various IDX feeds
-                    const price = property.price || property.listPrice || property.ListPrice || property.ListPrice || null;
-                    const address = property.address || property.UnparsedAddress || `${property.StreetNumber || ''} ${property.StreetName || ''}, ${property.City || ''}, ${property.StateOrProvince || ''} ${property.PostalCode || ''}`.trim() || 'Address not available';
-                    const beds = property.bedrooms || property.beds || property.BedroomsTotal || 'N/A';
-                    const baths = property.bathrooms || property.baths || property.BathroomsTotal || 'N/A';
-                    const sqft = property.squareFeet || property.sqft || property.LivingArea || null;
-                    const image = property.photos?.[0]?.url || property.image || property.Media?.[0]?.MediaURL || null;
-                    // Escape HTML in description to prevent code from showing
-                    const description = escapeHTML(property.description || property.remarks || property.PublicRemarks || 'Beautiful property in a desirable location.');
-                    const propertyType = property.propertyType || property.PropertyType || 'For Sale'; // Default for badge
+                    const price = property.StandardFields.ListPrice || null;
+                    const address = `${property.StandardFields.StreetNumber || ''} ${property.StandardFields.StreetName || ''}, ${property.StandardFields.City || ''}, ${property.StandardFields.StateOrProvince || ''} ${property.StandardFields.PostalCode || ''}`.trim() || 'Address not available';
+                    const beds = property.StandardFields.BedsTotal || 'N/A';
+                    const baths = property.StandardFields.BathsTotal || 'N/A';
+                    const sqft = property.StandardFields.BuildingAreaTotal || null;
+                    const image = property.Media[0]?.MediaURL || 'https://placehold.co/600x400';
+                    const description = property.StandardFields.PublicRemarks || 'Beautiful property in a desirable location.';
+                    const propertyType = property.StandardFields.PropertyType || 'For Sale'; // Default for badge
 
                     propertyCards += `
                         <div class="property-card">
@@ -1430,7 +1393,7 @@ Here's the corrected `index.html`:
                                     ` : ''}
                                 </div>
                                 <div class="property-description">
-                                    ${description.substring(0, 150)}${description.length > 150 ? '...' : ''}
+                                    ${description ? escapeHTML(description).substring(0, 150) + (description.length > 150 ? '...' : '') : ''}
                                 </div>
                             </div>
                         </div>
@@ -1441,7 +1404,6 @@ Here's the corrected `index.html`:
                 
             } catch (error) {
                 console.error('Error displaying properties:', error);
-                // Fallback to demo properties if there's an issue with the fetched data structure
                 showDemoPropertiesWithExplanation(filters);
             }
         }
@@ -1579,21 +1541,21 @@ Here's the corrected `index.html`:
                 propertyCards += `
                     <div class="property-card">
                         <div class="property-image">
-                            ${property.image ? `<img src="${property.image}" alt="Property Image">` : `<i class="fas fa-${property.type === 'Land' ? 'tree' : 'home'}"></i>`}
-                            <div class="property-badge">${property.type === 'Land' ? 'Land' : 'For Sale'}</div>
+                            ${property.image ? `<img src="${escapeHTML(property.image)}" alt="Property Image">` : `<i class="fas fa-${property.type === 'Land' ? 'tree' : 'home'}"></i>`}
+                            <div class="property-badge">${escapeHTML(property.type === 'Land' ? 'Land' : 'For Sale')}</div>
                         </div>
                         <div class="property-details">
                             <div class="property-price">${formatPrice(property.price)}</div>
-                            <div class="property-address">${property.address}</div>
+                            <div class="property-address">${escapeHTML(property.address)}</div>
                             ${property.type !== 'Land' ? `
                             <div class="property-features">
                                 <div class="feature">
                                     <i class="fas fa-bed"></i>
-                                    <span>${property.beds} Beds</span>
+                                    <span>${escapeHTML(String(property.beds))} Beds</span>
                                 </div>
                                 <div class="feature">
                                     <i class="fas fa-bath"></i>
-                                    <span>${property.baths} Baths</span>
+                                    <span>${escapeHTML(String(property.baths))} Baths</span>
                                 </div>
                                 ${property.sqft ? `
                                 <div class="feature">
@@ -1615,7 +1577,7 @@ Here's the corrected `index.html`:
                             </div>
                             `}
                             <div class="property-description">
-                                ${property.description}
+                                ${escapeHTML(property.description).substring(0, 150)}${property.description.length > 150 ? '...' : ''}
                             </div>
                         </div>
                     </div>
@@ -1686,5 +1648,4 @@ Here's the corrected `index.html`:
         });
     </script>
 </body>
-
 </html>
