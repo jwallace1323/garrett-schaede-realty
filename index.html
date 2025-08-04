@@ -169,42 +169,56 @@
         
         /* Mobile Navigation Overlay */
         .mobile-nav-overlay {
-            display: none; /* Hidden by default */
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            height: 100%;
+            height: 100vh;
             background: rgba(13, 40, 94, 0.98);
             z-index: 999;
+            display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             opacity: 0;
             visibility: hidden;
-            transition: opacity 0.4s ease, visibility 0.4s ease;
+            transform: translateY(-100%);
+            transition: all 0.4s ease;
         }
 
         .mobile-nav-overlay.active {
-            display: flex;
             opacity: 1;
             visibility: visible;
+            transform: translateY(0);
         }
 
         .mobile-nav-overlay .nav-links {
+            display: flex;
             flex-direction: column;
-            gap: 1.5rem;
+            gap: 2rem;
             text-align: center;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .mobile-nav-overlay .nav-links li {
+            list-style: none;
         }
 
         .mobile-nav-overlay .nav-links a {
-            font-size: 1.8rem;
-            padding: 1rem 0;
+            font-size: 2rem;
+            padding: 1rem 2rem;
             color: var(--text-light);
+            text-decoration: none;
+            display: block;
+            transition: all 0.3s ease;
+            border-radius: 10px;
         }
 
         .mobile-nav-overlay .nav-links a:hover {
             color: var(--accent-color);
+            background: rgba(255, 255, 255, 0.1);
         }
 
         .hero {
@@ -1068,16 +1082,13 @@
     </header>
 
     <div class="mobile-nav-overlay" id="mobileNav">
-        <button class="mobile-menu-btn" onclick="toggleMobileNav()" style="position: absolute; top: 1.5rem; right: 2rem;">
-            <i class="fas fa-times"></i>
-        </button>
         <ul class="nav-links">
-            <li><a href="#home" onclick="toggleMobileNav()">Home</a></li>
-            <li><a href="#about" onclick="toggleMobileNav()">About</a></li>
-            <li><a href="#properties" onclick="toggleMobileNav()">Properties</a></li>
-            <li><a href="#services" onclick="toggleMobileNav()">Services</a></li>
-            <li><a href="#contact-form" onclick="toggleMobileNav()">Contact Form</a></li>
-            <li><a href="#contact" onclick="toggleMobileNav()">Contact</a></li>
+            <li><a href="#home" onclick="closeMobileNav()">Home</a></li>
+            <li><a href="#about" onclick="closeMobileNav()">About</a></li>
+            <li><a href="#properties" onclick="closeMobileNav()">Properties</a></li>
+            <li><a href="#services" onclick="closeMobileNav()">Services</a></li>
+            <li><a href="#contact-form" onclick="closeMobileNav()">Contact Form</a></li>
+            <li><a href="#contact" onclick="closeMobileNav()">Contact</a></li>
         </ul>
     </div>
 
@@ -1094,7 +1105,10 @@
             <h2 class="section-title">Meet Garrett Schaede</h2>
             <div class="about-content">
                 <div class="about-image">
-                    <img class="agent-photo" src="garrett.pdf" alt="Garrett Schaede - Grand Lake Real Estate Agent">
+                    <img class="agent-photo" src="garrett.jpg" alt="Garrett Schaede - Grand Lake Real Estate Agent" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div style="display: none; width: 100%; max-width: 400px; height: 400px; background: var(--gradient-blue); border-radius: 8px; align-items: center; justify-content: center; color: var(--text-light); font-size: 4rem; border: 5px solid var(--background-light);">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
                 </div>
                 <div class="about-text">
                     <h3>Your Grand Lake Real Estate Expert</h3>
@@ -1290,14 +1304,34 @@
             const hamburgerIcon = document.getElementById('hamburgerIcon');
             
             if (mobileNav.classList.contains('active')) {
-                mobileNav.classList.remove('active');
-                hamburgerIcon.classList.remove('fa-times');
-                hamburgerIcon.classList.add('fa-bars');
+                closeMobileNav();
             } else {
-                mobileNav.classList.add('active');
-                hamburgerIcon.classList.remove('fa-bars');
-                hamburgerIcon.classList.add('fa-times');
+                openMobileNav();
             }
+        }
+
+        function openMobileNav() {
+            const mobileNav = document.getElementById('mobileNav');
+            const hamburgerIcon = document.getElementById('hamburgerIcon');
+            
+            mobileNav.classList.add('active');
+            hamburgerIcon.classList.remove('fa-bars');
+            hamburgerIcon.classList.add('fa-times');
+            
+            // Prevent body scroll when menu is open
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeMobileNav() {
+            const mobileNav = document.getElementById('mobileNav');
+            const hamburgerIcon = document.getElementById('hamburgerIcon');
+            
+            mobileNav.classList.remove('active');
+            hamburgerIcon.classList.remove('fa-times');
+            hamburgerIcon.classList.add('fa-bars');
+            
+            // Restore body scroll
+            document.body.style.overflow = '';
         }
 
         function scrollToHome(event) {
@@ -1717,7 +1751,7 @@
                         
                         // Close mobile menu if open
                         if (document.getElementById('mobileNav').classList.contains('active')) {
-                            toggleMobileNav();
+                            closeMobileNav();
                         }
                     }
                 });
