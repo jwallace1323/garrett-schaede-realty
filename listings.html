@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Properties - Garrett Schaede | Grand Lake Luxury Properties</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #0d285e; /* Dark Blue */
+            --secondary-color: #a87d3e; /* Gold/Bronze */
+            --accent-color: #e0b66e; /* Lighter Gold */
+            --text-dark: #2c3e50;
+            --text-light: #ecf0f1;
+            --background-light: #fdfaf6;
+            --background-dark: #1a2c4a;
+            --gradient-blue: linear-gradient(135deg, #0d285e 0%, #1a3a6b 100%);
+            --gradient-gold: linear-gradient(135deg, #a87d3e 0%, #e0b66e 100%);
+            --shadow-light: 0 5px 15px rgba(0,0,0,0.08);
+            --shadow-medium: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            line-height: 1.7;
+            color: var(--text-dark);
+            background: var(--background-light);
+            overflow-x: hidden;
+            padding-top: 100px; /* Adjust for fixed header */
+        }
+        
+        .header {
+            background: var(--gradient-blue);
+            color: var(--text-light);
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: var(--shadow-medium);
+            transition: all 0.3s ease;
+        }
+
+        .header.scrolled {
+            padding: 0.75rem 0;
+            background: rgba(13, 40, 94, 0.95);
+        }
+        
+        .nav-container {
+            max-width: 1300px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2.5rem;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--text-light);
+        }
+        
+        .logo:hover {
+            transform: translateY(-2px);
+            color: var(--accent-color);
+        }
+        
+        .logo-image-file {
+            width: 70px;
+            height: 70px;
+            object-fit: contain;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            background-color: white;
+            padding: 5px;
+            border: 2px solid var(--accent-color);
+        }
+        
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .logo-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.9rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            margin: 0;
+            line-height: 1;
+        }
+        
+        .logo-subtitle {
+            font-size: 0.8rem;
+            opacity: 0.9;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        
+        .logo-tagline {
+            font-size: 0.65rem;
+            opacity: 0.7;
+            margin-top: 0.2rem;
+            font-style: italic;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .nav-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 0.6rem 0;
+            position: relative;
+            font-size: 1.05rem;
+            letter-spacing: 0.5px;
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 50%;
+            background-color: var(--accent-color);
+            transition: width 0.3s ease, left 0.3s ease;
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+            left: 0;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-light);
+            font-size: 1.8rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            z-index: 1100;
+            position: relative;
+        }
+
+        .mobile-menu-btn .fa-bars, .mobile-menu-btn .fa-times {
+            transition: transform 0.3s ease;
+        }
+        
+        .mobile-nav-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(13, 40, 94, 0.98);
+            z-index: 999;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+        }
+
+        .mobile-nav-overlay.active {
+            display: flex;
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .mobile-nav-overlay .nav-links {
+            flex-direction: column;
+            gap: 1.5rem;
+            text-align: center;
+        }
+
+        .mobile-nav-overlay .nav-links a {
+            font-size: 1.8rem;
+            padding: 1rem 0;
+            color: var(--text-light);
+        }
+
+        .mobile-nav-overlay .nav-links a:hover {
+            color: var(--accent-color);
+        }
+        
+        .page-header {
+            text-align: center;
+            padding: 6rem 0 3rem;
+            color: var(--primary-color);
+        }
+        
+        .page-header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .page-header p {
+            font-size: 1.2rem;
+            color: var(--text-dark);
+            opacity: 0.8;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .section {
+            padding: 4rem 0;
+        }
+        
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0 2.5rem;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            margin-bottom: 3rem;
+            color: var(--primary-color);
+            position: relative;
+            font-weight: 700;
+            text-transform: capitalize;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 70px;
+            height: 4px;
+            background: var(--gradient-gold);
+            border-radius: 2px;
+        }
+        
+        .properties-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2.5rem;
+            margin-top: 2rem;
+        }
+        
+        .property-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: var(--shadow-light);
+            transition: all 0.4s ease;
+            position: relative;
+            border: 1px solid #f0f0f0;
+            display: flex;
+            flex-direction: column;
+            text-decoration: none;
+            color: var(--text-dark);
+        }
+        
+        .property-card:hover {
+            transform: translateY(-12px) scale(1.01);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .property-card-link {
+            text-decoration: none;
+        }
+        
+        .property-image {
+            height: 280px;
+            background: var(--gradient-blue);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-light);
+            font-size: 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .property-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .property-card:hover .property-image img {
+            transform: scale(1.05);
+        }
+
+        .image-nav {
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            transform: translateY(-50%);
+        }
+
+        .image-nav-btn {
+            background: rgba(0,0,0,0.5);
+            border: none;
+            color: white;
+            padding: 0.5rem;
+            cursor: pointer;
+            font-size: 1.5rem;
+            transition: background 0.3s ease;
+            opacity: 0.7;
+        }
+
+        .image-nav-btn:hover {
+            background: rgba(0,0,0,0.8);
+            opacity: 1;
+        }
+        
+        .property-badge {
+            position: absolute;
+            top: 18px;
+            right: 18px;
+            background: var(--accent-color);
+            color: var(--primary-color);
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 10;
+        }
+        
+        .property-details {
+            padding: 1.8rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .property-price {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 0.8rem;
+            letter-spacing: -0.5px;
+        }
+        
+        .property-address {
+            color: #555;
+            margin-bottom: 1.2rem;
+            font-size: 1.05rem;
+            font-weight: 400;
+        }
+        
+        .property-features {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            border-top: 1px solid #eee;
+            padding-top: 1.5rem;
+        }
+        
+        .feature {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #666;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .feature i {
+            color: var(--secondary-color);
+            font-size: 1.1rem;
+        }
+        
+        .property-description {
+            color: #444;
+            line-height: 1.7;
+            font-size: 0.95rem;
+            margin-top: auto;
+        }
+
+        .sold-listing {
+            filter: grayscale(80%);
+            opacity: 0.7;
+        }
+        
+        .footer {
+            background: var(--background-dark);
+            color: var(--text-light);
+            text-align: center;
+            padding: 2.5rem 0;
+            font-size: 0.9rem;
+            opacity: 0.9;
+            border-top: 5px solid var(--primary-color);
+        }
+
+        .footer p {
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer a {
+            color: var(--accent-color);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .footer a:hover {
+            color: white;
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 1024px) {
+            .nav-container {
+                padding: 0 2rem;
+            }
+            .nav-links {
+                gap: 1.5rem;
+            }
+            .page-header h1 {
+                font-size: 3rem;
+            }
+            .properties-grid {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            body {
+                padding-top: 80px;
+            }
+            .page-header h1 {
+                font-size: 2.5rem;
+            }
+            .page-header p {
+                font-size: 1rem;
+            }
+            .section {
+                padding: 3rem 0;
+            }
+            .section-title {
+                font-size: 2.2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-container {
+                padding: 0 1rem;
+            }
+            .logo-image-file {
+                width: 60px;
+                height: 60px;
+            }
+            .logo-title {
+                font-size: 1.6rem;
+            }
+            .logo-subtitle, .logo-tagline {
+                font-size: 0.7rem;
+            }
+            .property-image {
+                height: 220px;
+            }
+            .property-price {
+                font-size: 1.9rem;
+            }
+            .property-address {
+                font-size: 0.95rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header" id="mainHeader">
+        <div class="nav-container">
+            <a href="index.html" class="logo" onclick="scrollToHome(event)">
+                <img src="legacy%20logo.png" alt="Legacy Real Estate Logo" class="logo-image-file">
+                <div class="logo-text">
+                    <div class="logo-title">Grand Lake</div>
+                    <div class="logo-subtitle">Real Estate</div>
+                    <div class="logo-tagline">INTEGRITY | INNOVATION | EXCELLENCE</div>
+                </div>
+            </a>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="index.html#home">Home</a></li>
+                    <li><a href="index.html#about">About</a></li>
+                    <li><a href="properties.html">Properties</a></li>
+                    <li><a href="index.html#services">Services</a></li>
+                    <li><a href="index.html#contact">Contact</a></li>
+                </ul>
+                <button class="mobile-menu-btn" onclick="toggleMobileNav()">
+                    <i class="fas fa-bars" id="hamburgerIcon"></i>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <div class="mobile-nav-overlay" id="mobileNav">
+        <button class="mobile-menu-btn" onclick="toggleMobileNav()" style="position: absolute; top: 1.5rem; right: 2rem;">
+            <i class="fas fa-times"></i>
+        </button>
+        <ul class="nav-links">
+            <li><a href="index.html" onclick="toggleMobileNav()">Home</a></li>
+            <li><a href="index.html#about" onclick="toggleMobileNav()">About</a></li>
+            <li><a href="properties.html" onclick="toggleMobileNav()">Properties</a></li>
+            <li><a href="index.html#services" onclick="toggleMobileNav()">Services</a></li>
+            <li><a href="index.html#contact" onclick="toggleMobileNav()">Contact</a></li>
+        </ul>
+    </div>
+
+    <div class="page-header">
+        <div class="container">
+            <h1>Our Listings</h1>
+            <p>Explore our selection of featured properties and recently sold homes on Grand Lake, Oklahoma.</p>
+        </div>
+    </div>
+    
+    <section id="featured-listings" class="section">
+        <div class="container">
+            <h2 class="section-title">Featured Listings</h2>
+            <div class="properties-grid" id="featured-grid">
+                <!-- FEATURED LISTING 1 -->
+                <a href="listing_detail.html?id=1" class="property-card-link">
+                    <div class="property-card">
+                        <div class="property-image">
+                            <!-- Image Carousel -->
+                            <div class="image-carousel" data-images='["https://placehold.co/600x400/0d285e/e0b66e?text=Featured+1+Photo+1", "https://placehold.co/600x400/1a3a6b/e0b66e?text=Featured+1+Photo+2", "https://placehold.co/600x400/2563eb/e0b66e?text=Featured+1+Photo+3"]'>
+                                <img src="https://placehold.co/600x400/0d285e/e0b66e?text=Featured+1+Photo+1" alt="Featured Listing 1">
+                            </div>
+                            <div class="property-badge">For Sale</div>
+                        </div>
+                        <div class="property-details">
+                            <div class="property-price">$2,850,000</div>
+                            <div class="property-address">1247 Lakeside Drive, Afton, OK</div>
+                            <div class="property-features">
+                                <div class="feature"><i class="fas fa-bed"></i> <span>5 Beds</span></div>
+                                <div class="feature"><i class="fas fa-bath"></i> <span>4.5 Baths</span></div>
+                                <div class="feature"><i class="fas fa-ruler-combined"></i> <span>6,200 sq ft</span></div>
+                            </div>
+                            <div class="property-description">Stunning contemporary lakefront estate with panoramic water views and a private dock. This home is a masterpiece of design and comfort.</div>
+                        </div>
+                    </div>
+                </a>
+                
+                <!-- FEATURED LISTING 2 -->
+                <a href="listing_detail.html?id=2" class="property-card-link">
+                    <div class="property-card">
+                        <div class="property-image">
+                             <div class="image-carousel" data-images='["https://placehold.co/600x400/1a3a6b/e0b66e?text=Featured+2+Photo+1", "https://placehold.co/600x400/2563eb/e0b66e?text=Featured+2+Photo+2"]'>
+                                <img src="https://placehold.co/600x400/1a3a6b/e0b66e?text=Featured+2+Photo+1" alt="Featured Listing 2">
+                            </div>
+                            <div class="property-badge">For Sale</div>
+                        </div>
+                        <div class="property-details">
+                            <div class="property-price">$1,950,000</div>
+                            <div class="property-address">892 Water's Edge Court, Grove, OK</div>
+                            <div class="property-features">
+                                <div class="feature"><i class="fas fa-bed"></i> <span>4 Beds</span></div>
+                                <div class="feature"><i class="fas fa-bath"></i> <span>3.5 Baths</span></div>
+                                <div class="feature"><i class="fas fa-ruler-combined"></i> <span>4,800 sq ft</span></div>
+                            </div>
+                            <div class="property-description">Elegant waterfront retreat with 180-degree lake views, a private beach, and resort-style amenities. A perfect blend of luxury and natural beauty.</div>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- FEATURED LISTING 3 -->
+                <a href="listing_detail.html?id=3" class="property-card-link">
+                    <div class="property-card">
+                        <div class="property-image">
+                             <div class="image-carousel" data-images='["https://placehold.co/600x400/2563eb/e0b66e?text=Featured+3+Photo+1", "https://placehold.co/600x400/0d285e/e0b66e?text=Featured+3+Photo+2"]'>
+                                <img src="https://placehold.co/600x400/2563eb/e0b66e?text=Featured+3+Photo+1" alt="Featured Listing 3">
+                            </div>
+                            <div class="property-badge">For Sale</div>
+                        </div>
+                        <div class="property-details">
+                            <div class="property-price">$1,250,000</div>
+                            <div class="property-address">456 Sunset Bay Drive, Jay, OK</div>
+                            <div class="property-features">
+                                <div class="feature"><i class="fas fa-bed"></i> <span>3 Beds</span></div>
+                                <div class="feature"><i class="fas fa-bath"></i> <span>3 Baths</span></div>
+                                <div class="feature"><i class="fas fa-ruler-combined"></i> <span>2,900 sq ft</span></div>
+                            </div>
+                            <div class="property-description">Charming lakeside home with a private cove and a beautifully renovated interior. Enjoy tranquil evenings on the expansive outdoor patio.</div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section id="sold-listings" class="section">
+        <div class="container">
+            <h2 class="section-title">Recently Sold</h2>
+            <div class="properties-grid" id="sold-grid">
+                <!-- SOLD LISTING 1 -->
+                <a href="listing_detail.html?id=4" class="property-card-link">
+                    <div class="property-card sold-listing">
+                        <div class="property-image">
+                             <div class="image-carousel" data-images='["https://placehold.co/600x400/a87d3e/0d285e?text=Sold+1+Photo+1", "https://placehold.co/600x400/e0b66e/0d285e?text=Sold+1+Photo+2"]'>
+                                <img src="https://placehold.co/600x400/a87d3e/0d285e?text=Sold+1+Photo+1" alt="Sold Listing 1">
+                            </div>
+                            <div class="property-badge" style="background-color: var(--primary-color);">Sold</div>
+                        </div>
+                        <div class="property-details">
+                            <div class="property-price" style="color: #6c757d;">$2,100,000</div>
+                            <div class="property-address">956 Lakeshore Boulevard, Afton, OK</div>
+                            <div class="property-features">
+                                <div class="feature"><i class="fas fa-bed"></i> <span>4 Beds</span></div>
+                                <div class="feature"><i class="fas fa-bath"></i> <span>3.5 Baths</span></div>
+                                <div class="feature"><i class="fas fa-ruler-combined"></i> <span>5,200 sq ft</span></div>
+                            </div>
+                            <div class="property-description">Luxury lakefront estate with stunning sunset views. Sold in record time after a competitive bidding process.</div>
+                        </div>
+                    </div>
+                </a>
+                
+                <!-- SOLD LISTING 2 -->
+                <a href="listing_detail.html?id=5" class="property-card-link">
+                    <div class="property-card sold-listing">
+                        <div class="property-image">
+                             <div class="image-carousel" data-images='["https://placehold.co/600x400/e0b66e/0d285e?text=Sold+2+Photo+1", "https://placehold.co/600x400/a87d3e/0d285e?text=Sold+2+Photo+2"]'>
+                                <img src="https://placehold.co/600x400/e0b66e/0d285e?text=Sold+2+Photo+1" alt="Sold Listing 2">
+                            </div>
+                            <div class="property-badge" style="background-color: var(--primary-color);">Sold</div>
+                        </div>
+                        <div class="property-details">
+                            <div class="property-price" style="color: #6c757d;">$1,650,000</div>
+                            <div class="property-address">1823 Waterfront Drive, Grove, OK</div>
+                            <div class="property-features">
+                                <div class="feature"><i class="fas fa-bed"></i> <span>3 Beds</span></div>
+                                <div class="feature"><i class="fas fa-bath"></i> <span>2.5 Baths</span></div>
+                                <div class="feature"><i class="fas fa-ruler-combined"></i> <span>3,800 sq ft</span></div>
+                            </div>
+                            <div class="property-description">Contemporary waterfront home with an open floor plan and premium finishes. Another successful sale in a high-demand area.</div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Legacy Real Estate. All rights reserved. | Garrett Schaede, Grand Lake Real Estate Specialist</p>
+            <p>Serving Grand Lake o' the Cherokees and Grove, Oklahoma | Integrity | Innovation | Excellence</p>
+            <p style="margin-top: 1rem; font-size: 0.8rem; opacity: 0.7;">
+                Site Design by <a href="https://redeemeddigital.com" target="_blank">Redeemed Digital</a>
+            </p>
+            <div class="social-links" style="margin-top: 1rem;">
+                <a href="YOUR_FACEBOOK_PAGE_URL" target="_blank" aria-label="Facebook Page">
+                    <i class="fab fa-facebook-square" style="font-size: 2rem; color: #a87d3e; transition: color 0.3s ease;"></i>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile navigation toggle
+        function toggleMobileNav() {
+            const mobileNav = document.getElementById('mobileNav');
+            mobileNav.classList.toggle('active');
+            const hamburgerIcon = document.getElementById('hamburgerIcon');
+            hamburgerIcon.classList.toggle('fa-bars');
+            hamburgerIcon.classList.toggle('fa-times');
+        }
+
+        // Header shrink on scroll
+        window.addEventListener('scroll', function() {
+            const header = document.getElementById('mainHeader');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+        
+        // Photo Carousel functionality
+        document.querySelectorAll('.image-carousel').forEach(carousel => {
+            const images = JSON.parse(carousel.dataset.images);
+            let currentIndex = 0;
+            const imgElement = carousel.querySelector('img');
+
+            function updateImage() {
+                imgElement.src = images[currentIndex];
+            }
+
+            carousel.addEventListener('click', (e) => {
+                const rect = carousel.getBoundingClientRect();
+                const clickX = e.clientX - rect.left;
+
+                if (clickX < rect.width / 2) {
+                    // Click on the left side (previous)
+                    currentIndex = (currentIndex - 1 + images.length) % images.length;
+                } else {
+                    // Click on the right side (next)
+                    currentIndex = (currentIndex + 1) % images.length;
+                }
+                updateImage();
+            });
+        });
+    </script>
+</body>
+</html>
