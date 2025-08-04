@@ -1225,7 +1225,7 @@
 
         function scrollToHome(event) {
             event.preventDefault();
-            document.getElementById('home').scrollIntoView({ behavior: 'smooth' });
+            document.getElementById('home').scroll-to-view({ behavior: 'smooth' });
         }
 
         // Search properties with filters
@@ -1365,35 +1365,37 @@
                     const propertyType = property.StandardFields?.PropertyType || 'For Sale';
 
                     propertyCards += `
-                        <div class="property-card">
-                            <div class="property-image">
-                                ${image ? `<img src="${escapeHTML(image)}" alt="Property Image">` : '<i class="fas fa-home"></i>'}
-                                <div class="property-badge">${escapeHTML(propertyType === 'Land' ? 'Land For Sale' : 'For Sale')}</div>
-                            </div>
-                            <div class="property-details">
-                                <div class="property-price">${formatPrice(price)}</div>
-                                <div class="property-address">${escapeHTML(address)}</div>
-                                <div class="property-features">
-                                    <div class="feature">
-                                        <i class="fas fa-bed"></i>
-                                        <span>${escapeHTML(String(beds))} Beds</span>
-                                    </div>
-                                    <div class="feature">
-                                        <i class="fas fa-bath"></i>
-                                        <span>${escapeHTML(String(baths))} Baths</span>
-                                    </div>
-                                    ${sqft ? `
-                                    <div class="feature">
-                                        <i class="fas fa-ruler-combined"></i>
-                                        <span>${formatNumber(sqft)} sq ft</span>
-                                    </div>
-                                    ` : ''}
+                        <a href="listing_detail.html?listingId=${property.ListingKey}" class="property-card-link">
+                            <div class="property-card">
+                                <div class="property-image">
+                                    ${image ? `<img src="${escapeHTML(image)}" alt="Property Image">` : '<i class="fas fa-home"></i>'}
+                                    <div class="property-badge">${escapeHTML(propertyType === 'Land' ? 'Land For Sale' : 'For Sale')}</div>
                                 </div>
-                                <div class="property-description">
-                                    ${description ? escapeHTML(description).substring(0, 150) + (description.length > 150 ? '...' : '') : ''}
+                                <div class="property-details">
+                                    <div class="property-price">${formatPrice(price)}</div>
+                                    <div class="property-address">${escapeHTML(address)}</div>
+                                    <div class="property-features">
+                                        <div class="feature">
+                                            <i class="fas fa-bed"></i>
+                                            <span>${escapeHTML(String(beds))} Beds</span>
+                                        </div>
+                                        <div class="feature">
+                                            <i class="fas fa-bath"></i>
+                                            <span>${escapeHTML(String(baths))} Baths</span>
+                                        </div>
+                                        ${sqft ? `
+                                        <div class="feature">
+                                            <i class="fas fa-ruler-combined"></i>
+                                            <span>${formatNumber(sqft)} sq ft</span>
+                                        </div>
+                                        ` : ''}
+                                    </div>
+                                    <div class="property-description">
+                                        ${description ? escapeHTML(description).substring(0, 150) + (description.length > 150 ? '...' : '') : ''}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                     `;
                 });
                 
@@ -1407,6 +1409,8 @@
 
         // Show demo properties when API is unavailable or for demonstration
         function showDemoProperties(filters = {}, explanationBanner = '') {
+            console.log('Showing demo properties due to API limitations or proxy not found.');
+            
             const grid = document.getElementById('properties-grid');
             
             const demoProperties = [
