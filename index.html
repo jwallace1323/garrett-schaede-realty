@@ -1070,7 +1070,7 @@
                 <div class="loading-properties">
                     <i class="fas fa-spinner"></i>
                     <h3>Searching MLS Properties...</h3>
-                    <p>Connecting to Northeast Oklahoma MLS database...</p>
+                    <p>Connecting to Northeast Oklahoma MLS database for real-time listings...</p>
                 </div>
             </div>
         </div>
@@ -1269,6 +1269,7 @@
             if (filters.city) params.append('city', filters.city); // Pass city filter
 
             let propertiesToDisplay = null;
+            let responseOk = false;
             
             try {
                 console.log('Attempting Netlify Function proxy...');
@@ -1279,6 +1280,8 @@
                     }
                 });
                 
+                responseOk = response.ok;
+
                 if (response.ok) {
                     const result = await response.json();
                     if (result && Array.isArray(result.value)) {
@@ -1288,19 +1291,14 @@
                         console.log('API response was not in the expected format (missing .value array) or was an error:', result);
                     }
                 } else {
-                    console.log('Server proxy response not OK (status code):', response.status);
-                    try {
-                        const errorResult = await response.json();
-                        console.error('Server proxy response error details:', errorResult);
-                    } catch (jsonError) {
-                        console.error('Server proxy response not JSON:', response.statusText);
-                    }
+                    const responseText = await response.text(); // Get raw text if not OK
+                    console.log(`Server proxy response not OK (status code): ${response.status}. Response text: ${responseText}`);
                 }
             } catch (networkError) {
                 console.error('Netlify Function proxy failed (network error or unhandled exception):', networkError.message);
             }
             
-            if (propertiesToDisplay && propertiesToDisplay.length > 0) {
+            if (responseOk && propertiesToDisplay && propertiesToDisplay.length > 0) {
                 await displayProperties(propertiesToDisplay);
             } else {
                 showDemoPropertiesWithExplanation(filters);
