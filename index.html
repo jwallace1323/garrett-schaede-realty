@@ -209,8 +209,6 @@
 
         .hero {
             height: 100vh;
-            /* To easily insert your own photo, replace 'water photo.jpg' below with the path to your image */
-            /* Example: url('images/my-grand-lake-hero.jpg') or a full URL */
             background: linear-gradient(rgba(13, 40, 94, 0.5), rgba(26, 58, 107, 0.5)), url('water photo.jpg') center center/cover no-repeat;
             display: flex;
             align-items: center;
@@ -983,99 +981,6 @@
         </div>
     </section>
 
-    <section id="properties" class="featured-properties section">
-        <div class="container">
-            <h2 class="section-title">Current MLS Listings</h2>
-            
-            <div class="idx-search-container">
-                <div class="search-form">
-                    <div class="search-field">
-                        <label for="minPrice">Min Price</label>
-                        <select id="minPrice">
-                            <option value="">Any</option>
-                            <option value="100000">$100,000</option>
-                            <option value="200000">$200,000</option>
-                            <option value="300000">$300,000</option>
-                            <option value="500000">$500,000</option>
-                            <option value="750000">$750,000</option>
-                            <option value="1000000">$1,000,000</option>
-                            <option value="1500000">$1,500,000</option>
-                            <option value="2000000">$2,000,000</option>
-                        </select>
-                    </div>
-                    
-                    <div class="search-field">
-                        <label for="maxPrice">Max Price</label>
-                        <select id="maxPrice">
-                            <option value="">Any</option>
-                            <option value="300000">$300,000</option>
-                            <option value="500000">$500,000</option>
-                            <option value="750000">$750,000</option>
-                            <option value="1000000">$1,000,000</option>
-                            <option value="1500000">$1,500,000</option>
-                            <option value="2000000">$2,000,000</option>
-                            <option value="3000000">$3,000,000</option>
-                            <option value="5000000">$5,000,000+</option>
-                        </select>
-                    </div>
-                    
-                    <div class="search-field">
-                        <label for="bedrooms">Bedrooms</label>
-                        <select id="bedrooms">
-                            <option value="">Any</option>
-                            <option value="1">1+</option>
-                            <option value="2">2+</option>
-                            <option value="3">3+</option>
-                            <option value="4">4+</option>
-                            <option value="5">5+</option>
-                        </select>
-                    </div>
-                    
-                    <div class="search-field">
-                        <label for="bathrooms">Bathrooms</label>
-                        <select id="bathrooms">
-                            <option value="">Any</option>
-                            <option value="1">1+</option>
-                            <option value="2">2+</option>
-                            <option value="3">3+</option>
-                            <option value="4">4+</option>
-                        </select>
-                    </div>
-                    
-                    <div class="search-field">
-                        <label for="propertyType">Property Type</label>
-                        <select id="propertyType">
-                            <option value="">Any</option>
-                            <option value="Residential">Residential</option>
-                            <option value="Condo">Condo</option>
-                            <option value="Land">Land</option>
-                            <option value="Commercial">Commercial</option>
-                        </select>
-                    </div>
-                    
-                    <div class="search-field">
-                        <label for="city">City</label>
-                        <input type="text" id="city" placeholder="e.g., Grove, Afton, Jay">
-                    </div>
-                </div>
-                
-                <div style="text-align: center;">
-                    <button class="search-button" onclick="searchProperties()">
-                        <i class="fas fa-search"></i> Search Properties
-                    </button>
-                </div>
-            </div>
-            
-            <div class="properties-grid" id="properties-grid">
-                <div class="loading-properties">
-                    <i class="fas fa-spinner"></i>
-                    <h3>Searching MLS Properties...</h3>
-                    <p>Connecting to Northeast Oklahoma MLS database for real-time listings...</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <section id="services" class="services section">
         <div class="container">
             <h2 class="section-title">Our Real Estate Services</h2>
@@ -1172,6 +1077,11 @@
             <p style="margin-top: 1rem; font-size: 0.8rem; opacity: 0.7;">
                 Site Design by <a href="https://redeemeddigital.com" target="_blank">Redeemed Digital</a>
             </p>
+            <div class="social-links" style="margin-top: 1rem;">
+    <a href="https://www.facebook.com/profile.php?id=100090638335625" target="_blank" aria-label="Facebook Page">
+        <i class="fab fa-facebook-square" style="font-size: 2rem; color: #a87d3e; transition: color 0.3s ease;"></i>
+    </a>
+</div>
         </div>
     </footer>
 
