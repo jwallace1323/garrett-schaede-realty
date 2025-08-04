@@ -932,7 +932,7 @@
                 <ul class="nav-links">
                     <li><a href="#home">Home</a></li>
                     <li><a href="#about">About</a></li>
-                    <li><a href="#properties">Properties</a></li>
+                    <li><a href="listings.html">Properties</a></li>
                     <li><a href="#services">Services</a></li>
                     <li><a href="#contact">Contact</a></li>
                 </ul>
@@ -1036,6 +1036,41 @@
         </div>
     </section>
 
+      <!-- Contact Form -->
+                    <form class="contact-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+                        <div class="form-group">
+                            <label for="name">Contact Name *</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="phone">Phone Number *</label>
+                            <input type="tel" id="phone" name="phone" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">Email Address *</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="service">Service Interested In *</label>
+                            <select id="service" name="service" required>
+                                <option value="">Please select a service...</option>
+                                <option value="Buy">Buy</option>
+                                <option value="Sell">Sell</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="comments">Comments / Additional Details</label>
+                            <textarea id="comments" name="comments" placeholder="Please describe your pest problem, preferred service date, or any other details..."></textarea>
+                        </div>
+                        
+                        <button type="submit" class="form-submit">Send Message</button>
+                    </form>
+    
     <section id="contact" class="contact section">
         <div class="container">
             <h2 class="section-title" style="color: var(--text-light);">Get In Touch</h2>
@@ -1559,3 +1594,4 @@
     </script>
 </body>
 </html>
+
