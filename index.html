@@ -1259,7 +1259,8 @@
             const params = new URLSearchParams();
             params.append('limit', '12'); // Fetch up to 12 listings
             params.append('status', 'Active'); // RESO spec typically uses 'Active' (capitalized)
-
+            params.append('$expand', 'Media'); // Ensure media is included with the properties
+            
             // Add filters
             if (filters.minPrice) params.append('minprice', filters.minPrice);
             if (filters.maxPrice) params.append('maxprice', filters.maxPrice);
@@ -1269,7 +1270,6 @@
             if (filters.city) params.append('city', filters.city); // Pass city filter
 
             let propertiesToDisplay = null;
-            let responseOk = false;
             
             try {
                 console.log('Attempting Netlify Function proxy...');
@@ -1280,25 +1280,25 @@
                     }
                 });
                 
-                responseOk = response.ok;
-
                 if (response.ok) {
                     const result = await response.json();
+                    // NEW LOGIC: Correctly parse the Spark RESO Web API data structure
                     if (result && Array.isArray(result.value)) {
-                        propertiesToDisplay = result.value;
+                        propertiesToDisplay = result.value; // Extract the actual listings array
                         console.log('Netlify Function proxy success:', propertiesToDisplay);
                     } else {
                         console.log('API response was not in the expected format (missing .value array) or was an error:', result);
                     }
                 } else {
-                    const responseText = await response.text(); // Get raw text if not OK
+                    const responseText = await response.text();
                     console.log(`Server proxy response not OK (status code): ${response.status}. Response text: ${responseText}`);
                 }
             } catch (networkError) {
                 console.error('Netlify Function proxy failed (network error or unhandled exception):', networkError.message);
             }
             
-            if (responseOk && propertiesToDisplay && propertiesToDisplay.length > 0) {
+            // Decide whether to display real properties or fallback to demo mode
+            if (propertiesToDisplay && propertiesToDisplay.length > 0) {
                 await displayProperties(propertiesToDisplay);
             } else {
                 showDemoPropertiesWithExplanation(filters);
@@ -1362,6 +1362,7 @@
                     const beds = property.StandardFields?.BedsTotal || 'N/A';
                     const baths = property.StandardFields?.BathsTotal || 'N/A';
                     const sqft = property.StandardFields?.BuildingAreaTotal || null;
+                    // Corrected image path to access the Media array from the expanded data
                     const image = property.Media?.[0]?.MediaURL || 'https://placehold.co/600x400';
                     const description = property.StandardFields?.PublicRemarks || 'Beautiful property in a desirable location.';
                     const propertyType = property.StandardFields?.PropertyType || 'For Sale';
@@ -1558,7 +1559,7 @@
                                 ${property.sqft ? `
                                 <div class="feature">
                                     <i class="fas fa-ruler-combined"></i>
-                                    <span>${formatNumber(property.sqft)} sq ft</span>
+                                    <span>${formatNumber(sqft)} sq ft</span>
                                 </div>
                                 ` : ''}
                             </div>
