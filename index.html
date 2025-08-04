@@ -653,6 +653,111 @@
             opacity: 0.9;
         }
         
+        /* Contact Form Section */
+        .contact-form-section {
+            background: var(--background-light);
+            padding: 6rem 0;
+        }
+
+        .contact-form-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 2.5rem;
+        }
+
+        .contact-form {
+            background: white;
+            padding: 3rem;
+            border-radius: 15px;
+            box-shadow: var(--shadow-medium);
+            border: 1px solid #e0e0e0;
+            transition: all 0.3s ease;
+        }
+
+        .contact-form:hover {
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+            border-color: var(--accent-color);
+        }
+
+        .form-group {
+            margin-bottom: 2rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.8rem;
+            color: var(--primary-color);
+            font-weight: 600;
+            font-size: 1rem;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem 1.2rem;
+            border: 1px solid #dcdcdc;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-family: 'Montserrat', sans-serif;
+            transition: all 0.3s ease;
+            background-color: #fcfcfc;
+            color: var(--text-dark);
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+
+        .form-group select {
+            background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23000%22%20d%3D%22M287%2069.9a15.7%2015.7%200%200%200-22.3%200L146.2%20188.4%2027.6%2069.9a15.7%2015.7%200%200%200-22.3%2022.3l129.2%20129.2a15.7%2015.7%200%200%200%2022.3%200L287%2092.2a15.7%2015.7%200%200%200%200-22.3z%22%2F%3E%3C%2Fsvg%3E');
+            background-repeat: no-repeat;
+            background-position: right 1rem top 50%;
+            background-size: 0.65em auto;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+            background-color: #ffffff;
+            box-shadow: 0 0 0 4px rgba(168, 125, 62, 0.2);
+        }
+
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .form-submit {
+            background: var(--gradient-blue);
+            color: var(--text-light);
+            padding: 1.2rem 3rem;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            box-shadow: var(--shadow-light);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .form-submit:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(13, 40, 94, 0.3);
+            filter: brightness(1.1);
+        }
+
+        .form-submit:active {
+            transform: translateY(0);
+        }
+        
         .contact {
             background: var(--gradient-blue);
             color: var(--text-light);
@@ -778,6 +883,9 @@
                 max-width: 350px;
                 height: 350px;
             }
+            .contact-form {
+                padding: 2.5rem;
+            }
         }
 
         @media (max-width: 768px) {
@@ -862,84 +970,12 @@
                 font-size: 1rem;
                 padding: 1.2rem;
             }
-        }
-        /* Contact Form Styles */
-        .contact-form {
-            background: white;
-            padding: 2.5rem;
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(139, 69, 19, 0.1);
-            border: 2px solid #FFE4B5;
-            transition: all 0.3s ease;
-            height: fit-content;
-        }
-
-        .contact-form:hover {
-            box-shadow: 0 15px 40px rgba(139, 69, 19, 0.15);
-            border-color: #FF4500;
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: #8B4513;
-            font-weight: 600;
-            font-size: 1rem;
-        }
-
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 1rem;
-            border: 2px solid #FFE4B5;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-family: inherit;
-            transition: all 0.3s ease;
-            background: #F5F5DC;
-        }
-
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: #FF4500;
-            background: white;
-            box-shadow: 0 0 10px rgba(255, 69, 0, 0.1);
-        }
-
-        .form-group textarea {
-            min-height: 120px;
-            resize: vertical;
-        }
-
-        .form-submit {
-            background: linear-gradient(135deg, #FF4500, #FF8C00);
-            color: white;
-            padding: 1.2rem 2.5rem;
-            border: none;
-            border-radius: 8px;
-            font-size: 1.1rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            width: 100%;
-            box-shadow: 0 4px 20px rgba(255, 69, 0, 0.3);
-        }
-
-        .form-submit:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(255, 69, 0, 0.4);
-            background: linear-gradient(135deg, #FF8C00, #FF4500);
-        }
-
-        .form-submit:active {
-            transform: translateY(0);
+            .contact-form-container {
+                padding: 0 2rem;
+            }
+            .contact-form {
+                padding: 2rem;
+            }
         }
 
         @media (max-width: 480px) {
@@ -992,6 +1028,15 @@
             .contact-info h3 {
                 font-size: 2rem;
             }
+            .contact-form-container {
+                padding: 0 1rem;
+            }
+            .contact-form {
+                padding: 1.5rem;
+            }
+            .form-group {
+                margin-bottom: 1.5rem;
+            }
         }
     </style>
 </head>
@@ -1012,6 +1057,7 @@
                     <li><a href="#about">About</a></li>
                     <li><a href="listings.html">Properties</a></li>
                     <li><a href="#services">Services</a></li>
+                    <li><a href="#contact-form">Contact Form</a></li>
                     <li><a href="#contact">Contact</a></li>
                 </ul>
                 <button class="mobile-menu-btn" onclick="toggleMobileNav()">
@@ -1030,6 +1076,7 @@
             <li><a href="#about" onclick="toggleMobileNav()">About</a></li>
             <li><a href="#properties" onclick="toggleMobileNav()">Properties</a></li>
             <li><a href="#services" onclick="toggleMobileNav()">Services</a></li>
+            <li><a href="#contact-form" onclick="toggleMobileNav()">Contact Form</a></li>
             <li><a href="#contact" onclick="toggleMobileNav()">Contact</a></li>
         </ul>
     </div>
@@ -1101,7 +1148,7 @@
                     </div>
                     <h3>Personalized Service</h3>
                     <p>We provide full support from your first call to closing and beyond. Your satisfaction is our top priority.</p>
-                </div>
+                    </div>
 
                 <div class="service-card">
                     <div class="service-icon">
@@ -1114,40 +1161,47 @@
         </div>
     </section>
 
-      <!-- Contact Form -->
-                    <form class="contact-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
-                        <div class="form-group">
-                            <label for="name">Contact Name *</label>
-                            <input type="text" id="name" name="name" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="phone">Phone Number *</label>
-                            <input type="tel" id="phone" name="phone" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="email">Email Address *</label>
-                            <input type="email" id="email" name="email" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="service">Service Interested In *</label>
-                            <select id="service" name="service" required>
-                                <option value="">Please select a service...</option>
-                                <option value="Buy">Buy</option>
-                                <option value="Sell">Sell</option>
-                                <option value="Other">Other</option>
-                            </select>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="comments">Comments / Additional Details</label>
-                            <textarea id="comments" name="comments" placeholder="Please describe your pest problem, preferred service date, or any other details..."></textarea>
-                        </div>
-                        
-                        <button type="submit" class="form-submit">Send Message</button>
-                    </form>
+    <!-- Contact Form Section -->
+    <section id="contact-form" class="contact-form-section">
+        <div class="contact-form-container">
+            <h2 class="section-title">Contact Us</h2>
+            <form class="contact-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+                <div class="form-group">
+                    <label for="name">Contact Name *</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="phone">Phone Number *</label>
+                    <input type="tel" id="phone" name="phone" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email Address *</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="service">Service Interested In *</label>
+                    <select id="service" name="service" required>
+                        <option value="">Please select a service...</option>
+                        <option value="Buy">Buy</option>
+                        <option value="Sell">Sell</option>
+                        <option value="Investment Consultation">Investment Consultation</option>
+                        <option value="Market Analysis">Market Analysis</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="comments">Comments / Additional Details</label>
+                    <textarea id="comments" name="comments" placeholder="Please describe your real estate needs, preferred property type, budget range, or any other details..."></textarea>
+                </div>
+                
+                <button type="submit" class="form-submit">Send Message</button>
+            </form>
+        </div>
+    </section>
     
     <section id="contact" class="contact section">
         <div class="container">
@@ -1191,10 +1245,10 @@
                 Site Design by <a href="https://redeemeddigital.com" target="_blank">Redeemed Digital</a>
             </p>
             <div class="social-links" style="margin-top: 1rem;">
-    <a href="https://www.facebook.com/profile.php?id=100090638335625" target="_blank" aria-label="Facebook Page">
-        <i class="fab fa-facebook-square" style="font-size: 2rem; color: #a87d3e; transition: color 0.3s ease;"></i>
-    </a>
-</div>
+                <a href="https://www.facebook.com/profile.php?id=100090638335625" target="_blank" aria-label="Facebook Page">
+                    <i class="fab fa-facebook-square" style="font-size: 2rem; color: #a87d3e; transition: color 0.3s ease;"></i>
+                </a>
+            </div>
         </div>
     </footer>
 
@@ -1248,7 +1302,7 @@
 
         function scrollToHome(event) {
             event.preventDefault();
-            document.getElementById('home').scroll-to-view({ behavior: 'smooth' });
+            document.getElementById('home').scrollIntoView({ behavior: 'smooth' });
         }
 
         // Search properties with filters
@@ -1583,7 +1637,7 @@
                                 ${property.sqft ? `
                                 <div class="feature">
                                     <i class="fas fa-ruler-combined"></i>
-                                    <span>${formatNumber(sqft)} sq ft</span>
+                                    <span>${formatNumber(property.sqft)} sq ft</span>
                                 </div>
                                 ` : ''}
                             </div>
@@ -1618,11 +1672,11 @@
             if (isNaN(num)) return 'Price on Request'; // Handle non-numeric values
             
             if (num >= 1000000) {
-                return `$${(num / 1000000).toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 2 })}M`;
+                return `${(num / 1000000).toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 2 })}M`;
             } else if (num >= 1000) {
-                return `$${(num / 1000).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}K`;
+                return `${(num / 1000).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}K`;
             }
-            return `$${num.toLocaleString()}`;
+            return `${num.toLocaleString()}`;
         }
 
         function formatNumber(num) {
@@ -1672,5 +1726,3 @@
     </script>
 </body>
 </html>
-
-
