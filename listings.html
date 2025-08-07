@@ -285,7 +285,7 @@
             text-decoration: underline;
         }
 
-        /* --- NEW STYLES FOR PROPERTY LISTINGS --- */
+        /* --- STYLES FOR PROPERTY LISTINGS --- */
 
         .listings-grid {
             display: grid;
@@ -353,15 +353,7 @@
             align-items: center;
             gap: 0.5rem;
         }
-
-        .loader {
-            text-align: center;
-            font-size: 1.5rem;
-            color: var(--primary-color);
-        }
         
-        /* --- END OF NEW STYLES --- */
-
         @media (max-width: 1024px) {
             .nav-container {
                 padding: 0 2rem;
@@ -396,7 +388,7 @@
                 padding: 3rem 0;
             }
             .section-title {
-                font-size: 2.2rem; /* Corrected from font-synthesis */
+                font-size: 2.2rem;
             }
             .listings-grid {
                 grid-template-columns: 1fr; /* Stack cards on smaller screens */
@@ -509,29 +501,22 @@
             }
         });
 
-        // --- NEW JAVASCRIPT FOR FETCHING AND DISPLAYING LISTINGS ---
+        // --- JAVASCRIPT FOR FETCHING AND DISPLAYING LISTINGS VIA PROXY ---
 
         document.addEventListener('DOMContentLoaded', () => {
             fetchAndDisplayListings();
         });
 
         async function fetchAndDisplayListings() {
-            // --- Configuration ---
-            const apiToken = 'awgq6dp2w63ixkbw4kjt377u8'; // YOUR API KEY
-            // We use $expand=Media to get photos in the same request for efficiency.
-            // We use $filter=MlsStatus eq 'Active' to only show active properties.
-            const apiEndpoint = `https://replication.sparkapi.com/Version/3/Reso/OData/Property?$expand=Media&$filter=MlsStatus eq 'Active'`;
+            // This is the path to YOUR proxy function.
+            // Netlify automatically makes it available at this URL when you deploy.
+            const proxyEndpoint = '/.netlify/functions/get-listings';
             
             const listingsContainer = document.getElementById('listings-container');
             
             try {
-                const response = await fetch(apiEndpoint, {
-                    method: 'GET',
-                    headers: {
-                        'Authorization': `Bearer ${apiToken}`,
-                        'Accept': 'application/json'
-                    }
-                });
+                // Notice there are no headers or tokens here. The browser call is simple and secure.
+                const response = await fetch(proxyEndpoint);
 
                 if (!response.ok) {
                     throw new Error(`API request failed: ${response.status} ${response.statusText}`);
@@ -569,7 +554,6 @@
             grid.className = 'listings-grid';
 
             listings.forEach(listing => {
-                // Safely get the first photo URL, or use a placeholder
                 const imageUrl = (listing.Media && listing.Media.length > 0) ? listing.Media[0].MediaURL : 'https://via.placeholder.com/400x250.png?text=No+Image';
 
                 const card = `
