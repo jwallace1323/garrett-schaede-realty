@@ -284,7 +284,84 @@
             color: white;
             text-decoration: underline;
         }
+
+        /* --- NEW STYLES FOR PROPERTY LISTINGS --- */
+
+        .listings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2.5rem;
+            margin-top: 2rem;
+        }
         
+        .property-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow-medium);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .property-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+        }
+
+        .property-image {
+            height: 250px;
+            width: 100%;
+            object-fit: cover;
+            background-color: #eee; /* Placeholder color */
+        }
+        
+        .property-details {
+            padding: 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .property-price {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .property-address {
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+        }
+
+        .property-specs {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: auto; /* Pushes to the bottom */
+            padding-top: 1rem;
+            border-top: 1px solid #eee;
+            color: #555;
+            font-weight: 500;
+        }
+        
+        .property-specs span {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .loader {
+            text-align: center;
+            font-size: 1.5rem;
+            color: var(--primary-color);
+        }
+        
+        /* --- END OF NEW STYLES --- */
+
         @media (max-width: 1024px) {
             .nav-container {
                 padding: 0 2rem;
@@ -319,7 +396,10 @@
                 padding: 3rem 0;
             }
             .section-title {
-                font-synthesis: 2.2rem;
+                font-size: 2.2rem; /* Corrected from font-synthesis */
+            }
+            .listings-grid {
+                grid-template-columns: 1fr; /* Stack cards on smaller screens */
             }
         }
 
@@ -343,7 +423,7 @@
 <body>
     <header class="header" id="mainHeader">
         <div class="nav-container">
-            <a href="index.html" class="logo" onclick="scrollToHome(event)">
+            <a href="index.html" class="logo">
                 <img src="legacy%20logo.png" alt="Legacy Real Estate Logo" class="logo-image-file">
                 <div class="logo-text">
                     <div class="logo-title">Garrett Schaede</div>
@@ -387,12 +467,10 @@
         </div>
     </div>
     
-    <section id="listings-placeholder" class="section">
-        <div class="container" style="text-align: center;">
+    <section id="listings-section" class="section">
+        <div class="container" id="listings-container">
             <h2 class="section-title">Current Properties</h2>
-            <p style="font-size: 1.5rem; color: var(--text-dark); margin-top: 2rem;">
-                Live listings coming soon! Please check back for updates.
-            </p>
+            <p style="text-align: center; font-size: 1.5rem;">Loading listings...</p>
         </div>
     </section>
 
@@ -430,8 +508,89 @@
                 header.classList.remove('scrolled');
             }
         });
-        
-        // Remove the carousel script as it's no longer needed for this page
+
+        // --- NEW JAVASCRIPT FOR FETCHING AND DISPLAYING LISTINGS ---
+
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchAndDisplayListings();
+        });
+
+        async function fetchAndDisplayListings() {
+            // --- Configuration ---
+            const apiToken = 'awgq6dp2w63ixkbw4kjt377u8'; // YOUR API KEY
+            // We use $expand=Media to get photos in the same request for efficiency.
+            // We use $filter=MlsStatus eq 'Active' to only show active properties.
+            const apiEndpoint = `https://replication.sparkapi.com/Version/3/Reso/OData/Property?$expand=Media&$filter=MlsStatus eq 'Active'`;
+            
+            const listingsContainer = document.getElementById('listings-container');
+            
+            try {
+                const response = await fetch(apiEndpoint, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${apiToken}`,
+                        'Accept': 'application/json'
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error(`API request failed: ${response.status} ${response.statusText}`);
+                }
+
+                const data = await response.json();
+                const listings = data.value;
+                
+                displayListings(listings);
+
+            } catch (error) {
+                console.error('Failed to fetch listings:', error);
+                listingsContainer.innerHTML = `
+                    <h2 class="section-title">Error</h2>
+                    <p style="text-align: center; color: red;">Could not load property listings at this time. Please try again later.</p>
+                `;
+            }
+        }
+
+        function displayListings(listings) {
+            const container = document.getElementById('listings-container');
+            
+            if (!listings || listings.length === 0) {
+                container.innerHTML = `
+                    <h2 class="section-title">Our Properties</h2>
+                    <p style="text-align: center;">There are currently no active properties to display. Please check back soon!</p>
+                `;
+                return;
+            }
+            
+            // Clear the "Loading..." message
+            container.innerHTML = '<h2 class="section-title">Current Properties</h2>';
+            
+            const grid = document.createElement('div');
+            grid.className = 'listings-grid';
+
+            listings.forEach(listing => {
+                // Safely get the first photo URL, or use a placeholder
+                const imageUrl = (listing.Media && listing.Media.length > 0) ? listing.Media[0].MediaURL : 'https://via.placeholder.com/400x250.png?text=No+Image';
+
+                const card = `
+                    <div class="property-card">
+                        <img src="${imageUrl}" alt="Image of ${listing.UnparsedAddress}" class="property-image">
+                        <div class="property-details">
+                            <div class="property-price">$${listing.ListPrice.toLocaleString()}</div>
+                            <div class="property-address">${listing.UnparsedAddress}</div>
+                            <div class="property-specs">
+                                <span><i class="fas fa-bed"></i> ${listing.BedroomsTotal || 0}</span>
+                                <span><i class="fas fa-bath"></i> ${listing.BathroomsTotalInteger || 0}</span>
+                                <span><i class="fas fa-ruler-combined"></i> ${listing.LivingArea?.toLocaleString() || 'N/A'} sqft</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                grid.innerHTML += card;
+            });
+
+            container.appendChild(grid);
+        }
     </script>
 </body>
 </html>
