@@ -237,29 +237,6 @@
             padding: 0 2.5rem;
         }
         
-        .section-title {
-            text-align: center;
-            font-family: 'Playfair Display', serif;
-            font-size: 3rem;
-            margin-bottom: 3rem;
-            color: var(--primary-color);
-            position: relative;
-            font-weight: 700;
-            text-transform: capitalize;
-        }
-        
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: -15px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 70px;
-            height: 4px;
-            background: var(--gradient-gold);
-            border-radius: 2px;
-        }
-        
         .footer {
             background: var(--background-dark);
             color: var(--text-light);
@@ -300,6 +277,13 @@
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             display: flex;
             flex-direction: column;
+            height: 100%;
+        }
+
+        .property-card-link {
+            text-decoration: none;
+            color: inherit;
+            display: flex;
         }
 
         .property-card-link:hover .property-card {
@@ -351,29 +335,88 @@
             align-items: center;
             gap: 0.5rem;
         }
-        
-        @media (max-width: 1024px) {
-            .nav-container { padding: 0 2rem; }
-            .nav-links { gap: 1.5rem; }
-            .page-header h1 { font-size: 3rem; }
-        }
 
+        .search-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .total-found {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+        .controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        .controls select, .controls label {
+            font-size: 1rem;
+            font-family: 'Montserrat', sans-serif;
+        }
+        .controls select {
+            padding: 0.5rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background: white;
+        }
+        .pagination-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 3rem;
+            padding-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        #pagination-container-top {
+            margin-top: 0;
+            margin-bottom: 2rem;
+            padding-bottom: 0;
+        }
+        .pagination-container a, .pagination-container span {
+            display: inline-block;
+            padding: 0.6rem 1rem;
+            border: 1px solid #ddd;
+            background: white;
+            color: var(--primary-color);
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.2s, color 0.2s;
+            cursor: pointer;
+        }
+        .pagination-container a:hover {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+        .pagination-container .current-page {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+            cursor: default;
+        }
+        .pagination-container .disabled {
+            color: #aaa;
+            cursor: default;
+            background-color: #f5f5f5;
+        }
+        .pagination-container .disabled:hover {
+            background-color: #f5f5f5;
+            color: #aaa;
+            border-color: #ddd;
+        }
+        
         @media (max-width: 768px) {
             .nav-links { display: none; }
             .mobile-menu-btn { display: block; }
             body { padding-top: 80px; }
-            .page-header h1 { font-size: 2.5rem; }
-            .page-header p { font-size: 1rem; }
-            .section { padding: 3rem 0; }
-            .section-title { font-size: 2.2rem; }
+            .search-header { flex-direction: column; align-items: flex-start; }
             .listings-grid { grid-template-columns: 1fr; }
-        }
-
-        @media (max-width: 480px) {
-            .nav-container { padding: 0 1rem; }
-            .logo-image-file { width: 60px; height: 60px; }
-            .logo-title { font-size: 1.6rem; }
-            .logo-subtitle, .logo-tagline { font-size: 0.7rem; }
         }
     </style>
 </head>
@@ -391,7 +434,7 @@
             </a>
             <nav>
                 <ul class="nav-links">
-                    <li><a href="index.html#home">Home</a></li>
+                    <li><a href="index.html">Home</a></li>
                     <li><a href="index.html#about">About</a></li>
                     <li><a href="listings.html">Properties</a></li>
                     <li><a href="index.html#services">Services</a></li>
@@ -426,8 +469,36 @@
     
     <section id="listings-section" class="section">
         <div class="container" id="listings-container">
-            <h2 class="section-title">Current Properties</h2>
-            <p style="text-align: center; font-size: 1.5rem;">Loading listings...</p>
+            
+            <div class="search-header">
+                <div class="total-found" id="total-found">Loading...</div>
+                <div class="controls">
+                    <label for="limit-select">Listings Per Page:</label>
+                    <select id="limit-select">
+                        <option value="15">15</option>
+                        <option value="30">30</option>
+                        <option value="45">45</option>
+                    </select>
+                    <select id="sort-select">
+                        <option value="RecentlyUpdated">Recently Updated</option>
+                        <option value="PriceLowHigh">Price: Low to High</option>
+                        <option value="PriceHighLow">Price: High to Low</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="pagination-container" id="pagination-container-top">
+                <!-- Top pagination links will be injected here -->
+            </div>
+
+            <div class="listings-grid" id="listings-grid">
+                <!-- Listing cards will be injected here -->
+            </div>
+
+            <div class="pagination-container" id="pagination-container-bottom">
+                <!-- Bottom pagination links will be injected here -->
+            </div>
+
         </div>
     </section>
 
@@ -455,7 +526,6 @@
             hamburgerIcon.classList.toggle('fa-bars');
             hamburgerIcon.classList.toggle('fa-times');
         }
-
         window.addEventListener('scroll', function() {
             const header = document.getElementById('mainHeader');
             if (window.scrollY > 50) {
@@ -465,62 +535,69 @@
             }
         });
 
-        // --- FETCHING & DISPLAYING LISTINGS ---
+        // --- PAGINATION & SORTING LOGIC ---
+        let currentPage = 1;
+        let listingsPerPage = 15;
+        let currentSort = 'RecentlyUpdated';
+        let totalListings = 0;
+
         document.addEventListener('DOMContentLoaded', () => {
+            setupControls();
             fetchAndDisplayListings();
         });
 
+        function setupControls() {
+            document.getElementById('limit-select').addEventListener('change', (e) => {
+                listingsPerPage = parseInt(e.target.value);
+                currentPage = 1;
+                fetchAndDisplayListings();
+            });
+            document.getElementById('sort-select').addEventListener('change', (e) => {
+                currentSort = e.target.value;
+                currentPage = 1;
+                fetchAndDisplayListings();
+            });
+        }
+
         async function fetchAndDisplayListings() {
-            const proxyEndpoint = '/.netlify/functions/get-listings';
-            const listingsContainer = document.getElementById('listings-container');
+            const grid = document.getElementById('listings-grid');
+            grid.innerHTML = '<p style="text-align:center; font-size:1.2rem; grid-column: 1 / -1;">Loading listings...</p>';
+            
+            const proxyEndpoint = `/.netlify/functions/get-listings?page=${currentPage}&limit=${listingsPerPage}&sort=${currentSort}`;
             
             try {
                 const response = await fetch(proxyEndpoint);
-                if (!response.ok) {
-                    throw new Error(`API request failed: ${response.status} ${response.statusText}`);
-                }
+                if (!response.ok) throw new Error(`API request failed`);
+                
                 const data = await response.json();
-                const listings = data.value;
-                displayListings(listings);
+                
+                // --- DEBUGGING LINE ---
+                // Check your browser's developer console (F12) to see this output.
+                // It helps confirm if the '@odata.count' is being received.
+                console.log('API Response Data:', data); 
+                
+                totalListings = data['@odata.count'];
+                displayListings(data.value);
+                setupPagination();
+
             } catch (error) {
                 console.error('Failed to fetch listings:', error);
-                listingsContainer.innerHTML = `<h2 class="section-title">Error</h2><p style="text-align: center; color: red;">Could not load property listings at this time. Please try again later.</p>`;
+                grid.innerHTML = `<p style="text-align:center; color:red; grid-column: 1 / -1;">Could not load property listings.</p>`;
             }
         }
 
         function displayListings(listings) {
-             // --- TEMPORARY CODE TO FIND THE KEY ---
-    console.log(listings); 
-    // ------------------------------------    
-            const container = document.getElementById('listings-container');
-            
-            // --- !! IMPORTANT !! ---
-            // Replace this placeholder with the actual MemberKey for your realtor.
-            const REALTOR_MEMBER_KEY = 'YOUR_REALTORS_MEMBER_KEY';
+            document.getElementById('total-found').textContent = `${totalListings} Matches Found`;
+            const grid = document.getElementById('listings-grid');
+            grid.innerHTML = '';
 
             if (!listings || listings.length === 0) {
-                container.innerHTML = `<h2 class="section-title">Our Properties</h2><p style="text-align: center;">There are currently no active properties to display. Please check back soon!</p>`;
+                grid.innerHTML = `<p style="text-align: center; grid-column: 1 / -1;">No properties found matching your criteria.</p>`;
                 return;
             }
 
-            // --- SORTING LOGIC ---
-            // This sorts the array to put the target realtor's listings first.
-            listings.sort((a, b) => {
-                const isAFromRealtor = a.ListAgentKey === REALTOR_MEMBER_KEY;
-                const isBFromRealtor = b.ListAgentKey === REALTOR_MEMBER_KEY;
-                if (isAFromRealtor && !isBFromRealtor) return -1; // a comes first
-                if (!isAFromRealtor && isBFromRealtor) return 1;  // b comes first
-                return 0; // maintain original order for others
-            });
-
-            container.innerHTML = '<h2 class="section-title">Current Properties</h2>';
-            const grid = document.createElement('div');
-            grid.className = 'listings-grid';
-
             listings.forEach(listing => {
                 const imageUrl = (listing.Media && listing.Media.length > 0) ? listing.Media[0].MediaURL : 'https://via.placeholder.com/400x250.png?text=No+Image';
-
-                // The entire card is now a link to the details page.
                 const card = `
                     <a href="listing-details.html?listingKey=${listing.ListingKey}" class="property-card-link">
                         <div class="property-card">
@@ -539,13 +616,78 @@
                 `;
                 grid.innerHTML += card;
             });
+        }
 
-            container.appendChild(grid);
+        function setupPagination() {
+            const topContainer = document.getElementById('pagination-container-top');
+            const bottomContainer = document.getElementById('pagination-container-bottom');
             
-            // Add a style to make the card link look right without underlines.
-            const style = document.createElement('style');
-            style.innerHTML = `.property-card-link { text-decoration: none; color: inherit; }`;
-            document.head.appendChild(style);
+            topContainer.innerHTML = '';
+            bottomContainer.innerHTML = '';
+
+            const totalPages = Math.ceil(totalListings / listingsPerPage);
+
+            if (totalPages <= 1) {
+                topContainer.style.display = 'none';
+                bottomContainer.style.display = 'none';
+                return;
+            }
+            
+            topContainer.style.display = 'flex';
+            bottomContainer.style.display = 'flex';
+
+            const createLinkHTML = (page, text, isDisabled = false, isCurrent = false) => {
+                const tag = isDisabled || isCurrent ? 'span' : 'a';
+                const classes = [];
+                if (isCurrent) classes.push('current-page');
+                if (isDisabled) classes.push('disabled');
+                return `<${tag} class="${classes.join(' ')}" data-page="${page}">${text || page}</${tag}>`;
+            };
+
+            let paginationHTML = '';
+            paginationHTML += createLinkHTML(currentPage - 1, 'Previous', currentPage === 1);
+
+            let pages = [];
+            if (totalPages <= 7) {
+                for (let i = 1; i <= totalPages; i++) pages.push(i);
+            } else {
+                pages.push(1);
+                if (currentPage > 3) pages.push('...');
+                if (currentPage > 2) pages.push(currentPage - 1);
+                if (currentPage > 1 && currentPage < totalPages) pages.push(currentPage);
+                if (currentPage < totalPages - 1) pages.push(currentPage + 1);
+                if (currentPage < totalPages - 2) pages.push('...');
+                pages.push(totalPages);
+            }
+
+            let uniquePages = [...new Set(pages)];
+            uniquePages.forEach(page => {
+                if (page === '...') {
+                    paginationHTML += `<span>...</span>`;
+                } else {
+                    paginationHTML += createLinkHTML(page, page, false, page === currentPage);
+                }
+            });
+
+            paginationHTML += createLinkHTML(currentPage + 1, 'Next', currentPage === totalPages);
+
+            topContainer.innerHTML = paginationHTML;
+            bottomContainer.innerHTML = paginationHTML;
+
+            const handlePageClick = (e) => {
+                e.preventDefault();
+                if (e.target.tagName === 'A' && e.target.dataset.page) {
+                    const page = parseInt(e.target.dataset.page);
+                    if (page !== currentPage) {
+                        currentPage = page;
+                        fetchAndDisplayListings();
+                        document.getElementById('listings-section').scrollIntoView({ behavior: 'smooth' });
+                    }
+                }
+            };
+            
+            topContainer.onclick = handlePageClick;
+            bottomContainer.onclick = handlePageClick;
         }
     </script>
 </body>
