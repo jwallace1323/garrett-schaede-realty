@@ -285,8 +285,6 @@
             text-decoration: underline;
         }
 
-        /* --- STYLES FOR PROPERTY LISTINGS --- */
-
         .listings-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
@@ -304,7 +302,7 @@
             flex-direction: column;
         }
 
-        .property-card:hover {
+        .property-card-link:hover .property-card {
             transform: translateY(-10px);
             box-shadow: 0 15px 40px rgba(0,0,0,0.2);
         }
@@ -313,7 +311,7 @@
             height: 250px;
             width: 100%;
             object-fit: cover;
-            background-color: #eee; /* Placeholder color */
+            background-color: #eee;
         }
         
         .property-details {
@@ -341,7 +339,7 @@
         .property-specs {
             display: flex;
             gap: 1.5rem;
-            margin-top: auto; /* Pushes to the bottom */
+            margin-top: auto;
             padding-top: 1rem;
             border-top: 1px solid #eee;
             color: #555;
@@ -355,60 +353,27 @@
         }
         
         @media (max-width: 1024px) {
-            .nav-container {
-                padding: 0 2rem;
-            }
-            .nav-links {
-                gap: 1.5rem;
-            }
-            .page-header h1 {
-                font-size: 3rem;
-            }
+            .nav-container { padding: 0 2rem; }
+            .nav-links { gap: 1.5rem; }
+            .page-header h1 { font-size: 3rem; }
         }
 
         @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-            }
-            
-            .mobile-menu-btn {
-                display: block;
-            }
-            
-            body {
-                padding-top: 80px;
-            }
-            .page-header h1 {
-                font-size: 2.5rem;
-            }
-            .page-header p {
-                font-size: 1rem;
-            }
-            .section {
-                padding: 3rem 0;
-            }
-            .section-title {
-                font-size: 2.2rem;
-            }
-            .listings-grid {
-                grid-template-columns: 1fr; /* Stack cards on smaller screens */
-            }
+            .nav-links { display: none; }
+            .mobile-menu-btn { display: block; }
+            body { padding-top: 80px; }
+            .page-header h1 { font-size: 2.5rem; }
+            .page-header p { font-size: 1rem; }
+            .section { padding: 3rem 0; }
+            .section-title { font-size: 2.2rem; }
+            .listings-grid { grid-template-columns: 1fr; }
         }
 
         @media (max-width: 480px) {
-            .nav-container {
-                padding: 0 1rem;
-            }
-            .logo-image-file {
-                width: 60px;
-                height: 60px;
-            }
-            .logo-title {
-                font-size: 1.6rem;
-            }
-            .logo-subtitle, .logo-tagline {
-                font-size: 0.7rem;
-            }
+            .nav-container { padding: 0 1rem; }
+            .logo-image-file { width: 60px; height: 60px; }
+            .logo-title { font-size: 1.6rem; }
+            .logo-subtitle, .logo-tagline { font-size: 0.7rem; }
         }
     </style>
 </head>
@@ -428,7 +393,7 @@
                 <ul class="nav-links">
                     <li><a href="index.html#home">Home</a></li>
                     <li><a href="index.html#about">About</a></li>
-                    <li><a href="properties.html">Properties</a></li>
+                    <li><a href="listings.html">Properties</a></li>
                     <li><a href="index.html#services">Services</a></li>
                     <li><a href="index.html#contact">Contact</a></li>
                 </ul>
@@ -446,7 +411,7 @@
         <ul class="nav-links">
             <li><a href="index.html" onclick="toggleMobileNav()">Home</a></li>
             <li><a href="index.html#about" onclick="toggleMobileNav()">About</a></li>
-            <li><a href="properties.html" onclick="toggleMobileNav()">Properties</a></li>
+            <li><a href="listings.html" onclick="toggleMobileNav()">Properties</a></li>
             <li><a href="index.html#services" onclick="toggleMobileNav()">Services</a></li>
             <li><a href="index.html#contact" onclick="toggleMobileNav()">Contact</a></li>
         </ul>
@@ -482,7 +447,7 @@
     </footer>
 
     <script>
-        // Mobile navigation toggle
+        // --- MOBILE NAVIGATION & HEADER SCROLL ---
         function toggleMobileNav() {
             const mobileNav = document.getElementById('mobileNav');
             mobileNav.classList.toggle('active');
@@ -491,7 +456,6 @@
             hamburgerIcon.classList.toggle('fa-times');
         }
 
-        // Header shrink on scroll
         window.addEventListener('scroll', function() {
             const header = document.getElementById('mainHeader');
             if (window.scrollY > 50) {
@@ -501,79 +465,84 @@
             }
         });
 
-        // --- JAVASCRIPT FOR FETCHING AND DISPLAYING LISTINGS VIA PROXY ---
-
+        // --- FETCHING & DISPLAYING LISTINGS ---
         document.addEventListener('DOMContentLoaded', () => {
             fetchAndDisplayListings();
         });
 
         async function fetchAndDisplayListings() {
-            // This is the path to YOUR proxy function.
-            // Netlify automatically makes it available at this URL when you deploy.
             const proxyEndpoint = '/.netlify/functions/get-listings';
-            
             const listingsContainer = document.getElementById('listings-container');
             
             try {
-                // Notice there are no headers or tokens here. The browser call is simple and secure.
                 const response = await fetch(proxyEndpoint);
-
                 if (!response.ok) {
                     throw new Error(`API request failed: ${response.status} ${response.statusText}`);
                 }
-
                 const data = await response.json();
                 const listings = data.value;
-                
                 displayListings(listings);
-
             } catch (error) {
                 console.error('Failed to fetch listings:', error);
-                listingsContainer.innerHTML = `
-                    <h2 class="section-title">Error</h2>
-                    <p style="text-align: center; color: red;">Could not load property listings at this time. Please try again later.</p>
-                `;
+                listingsContainer.innerHTML = `<h2 class="section-title">Error</h2><p style="text-align: center; color: red;">Could not load property listings at this time. Please try again later.</p>`;
             }
         }
 
         function displayListings(listings) {
             const container = document.getElementById('listings-container');
             
+            // --- !! IMPORTANT !! ---
+            // Replace this placeholder with the actual MemberKey for your realtor.
+            const REALTOR_MEMBER_KEY = 'YOUR_REALTORS_MEMBER_KEY';
+
             if (!listings || listings.length === 0) {
-                container.innerHTML = `
-                    <h2 class="section-title">Our Properties</h2>
-                    <p style="text-align: center;">There are currently no active properties to display. Please check back soon!</p>
-                `;
+                container.innerHTML = `<h2 class="section-title">Our Properties</h2><p style="text-align: center;">There are currently no active properties to display. Please check back soon!</p>`;
                 return;
             }
-            
-            // Clear the "Loading..." message
+
+            // --- SORTING LOGIC ---
+            // This sorts the array to put the target realtor's listings first.
+            listings.sort((a, b) => {
+                const isAFromRealtor = a.ListAgentKey === REALTOR_MEMBER_KEY;
+                const isBFromRealtor = b.ListAgentKey === REALTOR_MEMBER_KEY;
+                if (isAFromRealtor && !isBFromRealtor) return -1; // a comes first
+                if (!isAFromRealtor && isBFromRealtor) return 1;  // b comes first
+                return 0; // maintain original order for others
+            });
+
             container.innerHTML = '<h2 class="section-title">Current Properties</h2>';
-            
             const grid = document.createElement('div');
             grid.className = 'listings-grid';
 
             listings.forEach(listing => {
                 const imageUrl = (listing.Media && listing.Media.length > 0) ? listing.Media[0].MediaURL : 'https://via.placeholder.com/400x250.png?text=No+Image';
 
+                // The entire card is now a link to the details page.
                 const card = `
-                    <div class="property-card">
-                        <img src="${imageUrl}" alt="Image of ${listing.UnparsedAddress}" class="property-image">
-                        <div class="property-details">
-                            <div class="property-price">$${listing.ListPrice.toLocaleString()}</div>
-                            <div class="property-address">${listing.UnparsedAddress}</div>
-                            <div class="property-specs">
-                                <span><i class="fas fa-bed"></i> ${listing.BedroomsTotal || 0}</span>
-                                <span><i class="fas fa-bath"></i> ${listing.BathroomsTotalInteger || 0}</span>
-                                <span><i class="fas fa-ruler-combined"></i> ${listing.LivingArea?.toLocaleString() || 'N/A'} sqft</span>
+                    <a href="listing-details.html?listingKey=${listing.ListingKey}" class="property-card-link">
+                        <div class="property-card">
+                            <img src="${imageUrl}" alt="Image of ${listing.UnparsedAddress}" class="property-image">
+                            <div class="property-details">
+                                <div class="property-price">$${listing.ListPrice.toLocaleString()}</div>
+                                <div class="property-address">${listing.UnparsedAddress}</div>
+                                <div class="property-specs">
+                                    <span><i class="fas fa-bed"></i> ${listing.BedroomsTotal || 0}</span>
+                                    <span><i class="fas fa-bath"></i> ${listing.BathroomsTotalInteger || 0}</span>
+                                    <span><i class="fas fa-ruler-combined"></i> ${listing.LivingArea?.toLocaleString() || 'N/A'} sqft</span>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </a>
                 `;
                 grid.innerHTML += card;
             });
 
             container.appendChild(grid);
+            
+            // Add a style to make the card link look right without underlines.
+            const style = document.createElement('style');
+            style.innerHTML = `.property-card-link { text-decoration: none; color: inherit; }`;
+            document.head.appendChild(style);
         }
     </script>
 </body>
