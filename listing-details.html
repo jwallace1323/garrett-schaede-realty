@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listing Details - Garrett Schaede | Grand Lake Luxury Properties</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- Paste ALL the CSS from your properties.html here --- */
+        :root {
+            --primary-color: #0d285e; /* Dark Blue */
+            --secondary-color: #a87d3e; /* Gold/Bronze */
+            --accent-color: #e0b66e; /* Lighter Gold */
+            --text-dark: #2c3e50;
+            --text-light: #ecf0f1;
+            --background-light: #fdfaf6;
+            --background-dark: #1a2c4a;
+            --gradient-blue: linear-gradient(135deg, #0d285e 0%, #1a3a6b 100%);
+            --gradient-gold: linear-gradient(135deg, #a87d3e 0%, #e0b66e 100%);
+            --shadow-light: 0 5px 15px rgba(0,0,0,0.08);
+            --shadow-medium: 0 10px 30px rgba(0,0,0,0.15);
+        }
+        body { font-family: 'Montserrat', sans-serif; background: var(--background-light); color: var(--text-dark); padding-top: 100px; margin: 0;}
+        /* ...and so on. Copy all your existing styles to maintain consistency. */
+        
+        /* --- NEW STYLES FOR DETAILS PAGE & CAROUSEL --- */
+        .listing-detail-container { padding: 2rem 0 4rem 0; }
+        .back-link { display: inline-block; margin-bottom: 2rem; color: var(--primary-color); text-decoration: none; font-weight: 600; }
+        .back-link:hover { text-decoration: underline; }
+
+        .listing-header { margin-bottom: 2rem; }
+        .listing-header h1 { font-family: 'Playfair Display', serif; font-size: 2.8rem; color: var(--primary-color); margin: 0; }
+        .listing-header .price { font-size: 2.2rem; font-weight: 700; color: var(--secondary-color); }
+        
+        .photo-carousel { position: relative; margin-bottom: 2rem; box-shadow: var(--shadow-medium); }
+        .carousel-image { width: 100%; height: 600px; object-fit: cover; display: block; background-color: #e0e0e0; }
+        .carousel-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(13, 40, 94, 0.7); color: white; border: none; font-size: 2rem; cursor: pointer; padding: 0.5rem 1.5rem; transition: background 0.3s; }
+        .carousel-btn:hover { background: rgba(13, 40, 94, 1); }
+        .prev-btn { left: 0; }
+        .next-btn { right: 0; }
+        .carousel-counter { position: absolute; bottom: 1rem; left: 1rem; background: rgba(13, 40, 94, 0.8); color: white; padding: 0.5rem 1rem; border-radius: 4px; font-size: 0.9rem; }
+
+        .details-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1.5rem; background: white; padding: 2rem; border-radius: 8px; box-shadow: var(--shadow-light); margin-bottom: 2rem; }
+        .detail-item { font-size: 1.1rem; }
+        .detail-item strong { display: block; color: var(--primary-color); font-weight: 600; }
+        
+        .listing-description { background: white; padding: 2rem; border-radius: 8px; box-shadow: var(--shadow-light); }
+        .listing-description h2 { font-family: 'Playfair Display', serif; color: var(--primary-color); margin-bottom: 1rem; }
+        .loading { text-align: center; font-size: 1.5rem; padding: 5rem 0; color: var(--primary-color); }
+    </style>
+</head>
+<body>
+    <header class="header" id="mainHeader">...</header>
+    <div class="mobile-nav-overlay" id="mobileNav">...</div>
+
+    <div class="container listing-detail-container" id="listing-content">
+        <div class="loading">Loading Listing Details...</div>
+    </div>
+
+    <footer class="footer">...</footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const listingKey = params.get('listingKey');
+
+            if (listingKey) {
+                fetchListingDetails(listingKey);
+            } else {
+                document.getElementById('listing-content').innerHTML = '<div class="loading">Error: No listing specified.</div>';
+            }
+        });
+
+        async function fetchListingDetails(listingKey) {
+            const proxyEndpoint = `/.netlify/functions/get-listings?listingKey=${listingKey}`;
+            try {
+                const response = await fetch(proxyEndpoint);
+                if (!response.ok) throw new Error('Failed to fetch details');
+                
+                const data = await response.json();
+                const listing = data.value[0]; // The API returns an array with one item
+                displayListingDetails(listing);
+
+            } catch (error) {
+                console.error("Fetch Error:", error);
+                document.getElementById('listing-content').innerHTML = '<div class="loading">Error: Could not load listing details.</div>';
+            }
+        }
+
+        function displayListingDetails(listing) {
+            const container = document.getElementById('listing-content');
+            
+            // Format data for display, with fallbacks for missing data
+            const price = listing.ListPrice ? `$${listing.ListPrice.toLocaleString()}` : 'Price not available';
+            const address = listing.UnparsedAddress || 'Address not available';
+            const propertyType = listing.PropertyType || 'N/A';
+            const bedrooms = listing.BedroomsTotal || 'N/A';
+            const bathrooms = listing.BathroomsFull ? `${listing.BathroomsFull} Full, ${listing.BathroomsHalf || 0} Half` : 'N/A';
+            const sqft = listing.LivingArea ? `${listing.LivingArea.toLocaleString()} sq. ft.` : 'N/A';
+            const lotSize = listing.LotSizeAcres ? `${listing.LotSizeAcres.toLocaleString()} acres` : 'N/A';
+            const status = listing.MlsStatus || 'N/A';
+            const description = listing.PublicRemarks || 'No description provided.';
+            
+            let currentImageIndex = 0;
+            const media = listing.Media || [];
+
+            const detailsHTML = `
+                <a href="properties.html" class="back-link">&larr; Back to search</a>
+                <div class="listing-header">
+                    <h1>${address}</h1>
+                    <div class="price">${price}</div>
+                </div>
+
+                <div class="photo-carousel">
+                    <img src="${media.length > 0 ? media[0].MediaURL : ''}" alt="Photo of ${address}" class="carousel-image" id="carousel-image">
+                    <button class="carousel-btn prev-btn" id="prev-btn">&lsaquo;</button>
+                    <button class="carousel-btn next-btn" id="next-btn">&rsaquo;</button>
+                    <div class="carousel-counter" id="carousel-counter"></div>
+                </div>
+
+                <div class="details-grid">
+                    <div class="detail-item"><strong>Property Type:</strong> ${propertyType}</div>
+                    <div class="detail-item"><strong>Bedrooms:</strong> ${bedrooms}</div>
+                    <div class="detail-item"><strong>Baths:</strong> ${bathrooms}</div>
+                    <div class="detail-item"><strong>Square Footage:</strong> ${sqft}</div>
+                    <div class="detail-item"><strong>Lot Size:</strong> ${lotSize}</div>
+                    <div class="detail-item"><strong>Status:</strong> ${status}</div>
+                </div>
+
+                <div class="listing-description">
+                    <h2>Property Description</h2>
+                    <p>${description}</p>
+                </div>
+            `;
+            
+            container.innerHTML = detailsHTML;
+            
+            // --- Carousel Logic ---
+            if (media.length > 0) {
+                const imgElement = document.getElementById('carousel-image');
+                const counterElement = document.getElementById('carousel-counter');
+                
+                function updateCarousel() {
+                    imgElement.src = media[currentImageIndex].MediaURL;
+                    counterElement.textContent = `Photo ${currentImageIndex + 1} of ${media.length}`;
+                }
+
+                document.getElementById('prev-btn').addEventListener('click', () => {
+                    currentImageIndex = (currentImageIndex > 0) ? currentImageIndex - 1 : media.length - 1;
+                    updateCarousel();
+                });
+
+                document.getElementById('next-btn').addEventListener('click', () => {
+                    currentImageIndex = (currentImageIndex < media.length - 1) ? currentImageIndex + 1 : 0;
+                    updateCarousel();
+                });
+                
+                updateCarousel(); // Initial setup
+            } else {
+                 document.querySelector('.photo-carousel').style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>
