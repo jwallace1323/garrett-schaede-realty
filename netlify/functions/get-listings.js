@@ -1,18 +1,34 @@
 // location: netlify/functions/get-listings.js
 
 exports.handler = async function(event, context) {
-  const API_TOKEN = '7w14e1fzp5g5al7v9ky0dgx89'; 
-  const { listingKey } = event.queryStringParameters; // Check for a specific listingKey
+  const API_TOKEN = '7w14e1fzp5g5al7v9ky0dgx89';
+  const { listingKey, page = 1, limit = 15, sort = 'RecentlyUpdated' } = event.queryStringParameters;
+
+  // --- OData Sorting Options ---
+  // Maps a simple name to the actual API field and direction.
+  const sortOptions = {
+    'RecentlyUpdated': 'ModificationTimestamp desc',
+    'PriceLowHigh': 'ListPrice asc',
+    'PriceHighLow': 'ListPrice desc'
+  };
+  const orderBy = sortOptions[sort] || sortOptions['RecentlyUpdated'];
 
   let apiUrl;
 
   if (listingKey) {
-    // SCENARIO 1: Fetch a SINGLE listing for the details page
-    // We expand Media and Rooms to get all photos and room details.
+    // This part for fetching a single listing remains the same.
     apiUrl = `https://replication.sparkapi.com/Version/3/Reso/OData/Property?$filter=ListingKey eq '${listingKey}'&$expand=Media,Rooms`;
   } else {
-    // SCENARIO 2: Fetch ALL active listings for the main properties page
-    apiUrl = 'https://replication.sparkapi.com/Version/3/Reso/OData/Property?$expand=Media&$filter=MlsStatus eq \'Active\'';
+    // --- UPDATED LOGIC FOR PAGINATION & SORTING ---
+    const skip = (parseInt(page) - 1) * parseInt(limit);
+    
+    apiUrl = 'https://replication.sparkapi.com/Version/3/Reso/OData/Property?' +
+               `$filter=MlsStatus eq 'Active'` +
+               `&$expand=Media` +
+               `&$orderby=${orderBy}` +
+               `&$top=${limit}` +
+               `&$skip=${skip}` +
+               `&$count=true`; // This is crucial: it asks the API for the total number of listings.
   }
 
   try {
@@ -24,23 +40,15 @@ exports.handler = async function(event, context) {
     });
 
     if (!response.ok) {
-      return {
-        statusCode: response.status,
-        body: JSON.stringify({ error: `API Error: ${response.statusText}` })
-      };
+      return { statusCode: response.status, body: JSON.stringify({ error: `API Error: ${response.statusText}` }) };
     }
 
     const data = await response.json();
 
-    return {
-      statusCode: 200,
-      body: JSON.stringify(data)
-    };
+    // The data object will now contain both the listings (`value`) and the total count (`@odata.count`).
+    return { statusCode: 200, body: JSON.stringify(data) };
 
   } catch (error) {
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: 'Proxy server error: ' + error.message })
-    };
+    return { statusCode: 500, body: JSON.stringify({ error: 'Proxy server error: ' + error.message }) };
   }
 };
