@@ -436,10 +436,10 @@
     </footer>
 
     <script>
+        let allListings = []; // To store all fetched listings
         let currentPage = 1;
         let listingsPerPage = 15;
         let currentSort = 'RecentlyUpdated';
-        let totalListings = 0;
 
         function toggleMobileNav() {
             document.getElementById('mobileNav').classList.toggle('active');
@@ -456,36 +456,36 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             setupControls();
-            fetchAndDisplayListings();
+            fetchAllListings(); // Initial fetch
         });
 
         function setupControls() {
             document.getElementById('limit-select').addEventListener('change', (e) => {
                 listingsPerPage = parseInt(e.target.value);
                 currentPage = 1;
-                fetchAndDisplayListings();
+                renderPage(); // Re-render with new page size
             });
             document.getElementById('sort-select').addEventListener('change', (e) => {
                 currentSort = e.target.value;
                 currentPage = 1;
-                fetchAndDisplayListings();
+                renderPage(); // Re-render with new sort
             });
         }
 
-        async function fetchAndDisplayListings() {
+        async function fetchAllListings() {
             const grid = document.getElementById('listings-grid');
             grid.innerHTML = '<p style="text-align:center; font-size:1.2rem; grid-column: 1 / -1;">Loading listings...</p>';
             
-            const proxyEndpoint = `/.netlify/functions/get-listings?page=${currentPage}&limit=${listingsPerPage}&sort=${currentSort}`;
+            const proxyEndpoint = `/.netlify/functions/get-listings`;
             
             try {
                 const response = await fetch(proxyEndpoint);
                 if (!response.ok) throw new Error(`API request failed`);
                 
                 const data = await response.json();
-                totalListings = data['@odata.count'];
-                displayListings(data.value);
-                setupPagination();
+                allListings = data.value; // Store all listings
+                document.getElementById('total-found').textContent = `${data['@odata.count']} Matches Found`;
+                renderPage(); // Render the first page
 
             } catch (error) {
                 console.error('Failed to fetch listings:', error);
@@ -493,22 +493,54 @@
             }
         }
 
-        function displayListings(listings) {
-            document.getElementById('total-found').textContent = `${totalListings} Matches Found`;
-            const grid = document.getElementById('listings-grid');
-            grid.innerHTML = '';
-
+        function renderPage() {
+            // --- SORTING LOGIC ---
             const REALTOR_OFFICE_KEY = '20211001133511324573000000';
+            const REALTOR_NAME = 'Garrett Schaede';
 
-            listings.sort((a, b) => {
+            // Create a mutable copy for sorting
+            let sortedListings = [...allListings];
+
+            // Apply user-selected sort first
+            sortedListings.sort((a, b) => {
+                if (currentSort === 'PriceLowHigh') return (a.ListPrice || 0) - (b.ListPrice || 0);
+                if (currentSort === 'PriceHighLow') return (b.ListPrice || 0) - (a.ListPrice || 0);
+                // Default to RecentlyUpdated (ModificationTimestamp)
+                return new Date(b.ModificationTimestamp) - new Date(a.ModificationTimestamp);
+            });
+
+            // Then, apply the featured sort on top
+            sortedListings.sort((a, b) => {
                 const isAFromOffice = a.ListOfficeKey === REALTOR_OFFICE_KEY;
                 const isBFromOffice = b.ListOfficeKey === REALTOR_OFFICE_KEY;
 
                 if (isAFromOffice && !isBFromOffice) return -1;
                 if (!isAFromOffice && isBFromOffice) return 1;
 
+                if (isAFromOffice && isBFromOffice) {
+                    const agentNameA = (a.ListAgentFullName || "").trim().toLowerCase();
+                    const isAFromRealtor = agentNameA.includes(REALTOR_NAME.toLowerCase());
+                    const agentNameB = (b.ListAgentFullName || "").trim().toLowerCase();
+                    const isBFromRealtor = agentNameB.includes(REALTOR_NAME.toLowerCase());
+
+                    if (isAFromRealtor && !isBFromRealtor) return -1;
+                    if (!isAFromRealtor && isBFromRealtor) return 1;
+                }
                 return 0;
             });
+            
+            // --- PAGINATION LOGIC ---
+            const startIndex = (currentPage - 1) * listingsPerPage;
+            const endIndex = startIndex + listingsPerPage;
+            const paginatedListings = sortedListings.slice(startIndex, endIndex);
+
+            displayListings(paginatedListings);
+            setupPagination(sortedListings.length);
+        }
+
+        function displayListings(listings) {
+            const grid = document.getElementById('listings-grid');
+            grid.innerHTML = '';
 
             if (!listings || listings.length === 0) {
                 grid.innerHTML = `<p style="text-align: center; grid-column: 1 / -1;">No properties found.</p>`;
@@ -517,7 +549,6 @@
 
             listings.forEach(listing => {
                 const imageUrl = (listing.Media && listing.Media.length > 0) ? listing.Media[0].MediaURL : 'https://via.placeholder.com/400x250.png?text=No+Image';
-                
                 const modifiedDate = listing.ModificationTimestamp 
                     ? new Date(listing.ModificationTimestamp).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
                     : 'N/A';
@@ -527,8 +558,8 @@
                         <div class="property-card">
                             <img src="${imageUrl}" alt="Image of ${listing.UnparsedAddress}" class="property-image">
                             <div class="property-details">
-                                <div class="property-price">$${listing.ListPrice.toLocaleString()}</div>
-                                <div class="property-address">${listing.UnparsedAddress}</div>
+                                <div class="property-price">$${(listing.ListPrice || 0).toLocaleString()}</div>
+                                <div class="property-address">${listing.UnparsedAddress || 'Address unavailable'}</div>
                                 <div class="property-specs">
                                     <span><i class="fas fa-bed"></i> ${listing.BedroomsTotal || 0}</span>
                                     <span><i class="fas fa-bath"></i> ${listing.BathroomsTotalInteger || 0}</span>
@@ -546,14 +577,13 @@
             });
         }
 
-        function setupPagination() {
+        function setupPagination(totalItems) {
             const topContainer = document.getElementById('pagination-container-top');
             const bottomContainer = document.getElementById('pagination-container-bottom');
-            
             topContainer.innerHTML = '';
             bottomContainer.innerHTML = '';
 
-            const totalPages = Math.ceil(totalListings / listingsPerPage);
+            const totalPages = Math.ceil(totalItems / listingsPerPage);
 
             if (totalPages <= 1) {
                 topContainer.style.display = 'none';
@@ -589,7 +619,6 @@
             }
 
             let uniquePages = [...new Set(pages)];
-            
             uniquePages.forEach(page => {
                 if (page === '...') {
                     paginationHTML += `<span>...</span>`;
@@ -609,7 +638,7 @@
                     const page = parseInt(e.target.dataset.page);
                     if (page !== currentPage) {
                         currentPage = page;
-                        fetchAndDisplayListings();
+                        renderPage();
                         document.getElementById('listings-section').scrollIntoView({ behavior: 'smooth' });
                     }
                 }
