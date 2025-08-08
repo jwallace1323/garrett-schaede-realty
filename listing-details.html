@@ -228,17 +228,17 @@
             
             try {
                 const response = await fetch(proxyEndpoint);
+                const data = await response.json(); // Always try to parse the JSON body
+
+                // If the response is not OK, the 'data' variable now holds our detailed error object from the proxy.
                 if (!response.ok) {
-                    throw new Error(`Failed to fetch details. Server responded with status: ${response.status}`);
+                    // Use the 'details' from our proxy's error structure, or fall back to a generic message.
+                    const errorMessage = data.details || `Server responded with status: ${response.status}`;
+                    throw new Error(errorMessage);
                 }
                 
-                const data = await response.json();
-
-                // --- THIS IS THE CORRECTED LOGIC ---
-                // When using $filter, the result is always an array inside the 'value' property.
-                // We need to check if this array exists and contains at least one item.
                 if (data.value && data.value.length > 0) {
-                    const listing = data.value[0]; // The single listing is the first item in the array.
+                    const listing = data.value[0];
                     displayListingDetails(listing);
                 } else {
                     throw new Error(`Listing with key "${listingKey}" not found.`);
@@ -246,7 +246,8 @@
 
             } catch (error) {
                 console.error("Fetch Error:", error);
-                contentContainer.innerHTML = `<div class="loading">Error: Could not load listing details. Please try again or go back to the listings page. <br><br><i><small>${error.message}</small></i></div>`;
+                // Display the specific error message to the user for better debugging.
+                contentContainer.innerHTML = `<div class="loading">Error: Could not load listing details. <br><br><i><small>Reason: ${error.message}</small></i></div>`;
             }
         }
 
