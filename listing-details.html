@@ -234,13 +234,14 @@
                 
                 const data = await response.json();
 
-                // When fetching a single item directly, the result is not in a 'value' array.
-                // The data object itself is the listing.
-                if (data && data.ListingKey) {
-                    displayListingDetails(data);
+                // --- THIS IS THE CORRECTED LOGIC ---
+                // When using $filter, the result is always an array inside the 'value' property.
+                // We need to check if this array exists and contains at least one item.
+                if (data.value && data.value.length > 0) {
+                    const listing = data.value[0]; // The single listing is the first item in the array.
+                    displayListingDetails(listing);
                 } else {
-                    // This handles cases where the API returns an error structure instead of a listing.
-                    throw new Error(`Listing with key "${listingKey}" not found or API returned an error.`);
+                    throw new Error(`Listing with key "${listingKey}" not found.`);
                 }
 
             } catch (error) {
