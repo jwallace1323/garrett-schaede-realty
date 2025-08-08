@@ -494,6 +494,7 @@
         }
 
         function displayListings(listings) {
+            console.log("API Data Received for Sorting:", listings); // Debugging line
             document.getElementById('total-found').textContent = `${totalListings} Matches Found`;
             const grid = document.getElementById('listings-grid');
             grid.innerHTML = '';
@@ -509,8 +510,11 @@
                 if (!isAFromOffice && isBFromOffice) return 1;
 
                 if (isAFromOffice && isBFromOffice) {
-                    const isAFromRealtor = a.ListAgentFullName && a.ListAgentFullName.includes(REALTOR_NAME);
-                    const isBFromRealtor = b.ListAgentFullName && b.ListAgentFullName.includes(REALTOR_NAME);
+                    const agentNameA = (a.ListAgentFullName || "").trim();
+                    const agentNameB = (b.ListAgentFullName || "").trim();
+                    
+                    const isAFromRealtor = agentNameA.includes(REALTOR_NAME);
+                    const isBFromRealtor = agentNameB.includes(REALTOR_NAME);
 
                     if (isAFromRealtor && !isBFromRealtor) return -1;
                     if (!isAFromRealtor && isBFromRealtor) return 1;
@@ -598,6 +602,7 @@
             }
 
             let uniquePages = [...new Set(pages)];
+            
             uniquePages.forEach(page => {
                 if (page === '...') {
                     paginationHTML += `<span>...</span>`;
