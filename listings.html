@@ -494,6 +494,10 @@
         }
 
         function displayListings(listings) {
+            // --- DEBUGGING LINE ---
+            // This will help confirm the exact data format in the browser console.
+            console.log("Data received for sorting:", listings);
+
             document.getElementById('total-found').textContent = `${totalListings} Matches Found`;
             const grid = document.getElementById('listings-grid');
             grid.innerHTML = '';
