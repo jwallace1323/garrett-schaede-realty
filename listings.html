@@ -494,7 +494,6 @@
         }
 
         function displayListings(listings) {
-            console.log("API Data Received for Sorting:", listings); // Debugging line
             document.getElementById('total-found').textContent = `${totalListings} Matches Found`;
             const grid = document.getElementById('listings-grid');
             grid.innerHTML = '';
@@ -506,15 +505,17 @@
                 const isAFromOffice = a.ListOfficeKey === REALTOR_OFFICE_KEY;
                 const isBFromOffice = b.ListOfficeKey === REALTOR_OFFICE_KEY;
 
+                // 1. Primary Sort: By Office
                 if (isAFromOffice && !isBFromOffice) return -1;
                 if (!isAFromOffice && isBFromOffice) return 1;
 
+                // 2. Secondary Sort: By Agent Name (only if both are from the same office)
                 if (isAFromOffice && isBFromOffice) {
-                    const agentNameA = (a.ListAgentFullName || "").trim();
-                    const agentNameB = (b.ListAgentFullName || "").trim();
+                    const agentNameA = (a.ListAgentFullName || "").trim().toLowerCase();
+                    const agentNameB = (b.ListAgentFullName || "").trim().toLowerCase();
                     
-                    const isAFromRealtor = agentNameA.includes(REALTOR_NAME);
-                    const isBFromRealtor = agentNameB.includes(REALTOR_NAME);
+                    const isAFromRealtor = agentNameA.includes(REALTOR_NAME.toLowerCase());
+                    const isBFromRealtor = agentNameB.includes(REALTOR_NAME.toLowerCase());
 
                     if (isAFromRealtor && !isBFromRealtor) return -1;
                     if (!isAFromRealtor && isBFromRealtor) return 1;
