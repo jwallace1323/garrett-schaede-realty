@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Properties - Garrett Schaede | Grand Lake Luxury Properties</title>
+    <title>Listing Details - Garrett Schaede | Grand Lake Luxury Properties</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        /* --- Paste ALL the CSS from your properties.html here --- */
         :root {
             --primary-color: #0d285e; /* Dark Blue */
             --secondary-color: #a87d3e; /* Gold/Bronze */
@@ -20,664 +21,146 @@
             --shadow-light: 0 5px 15px rgba(0,0,0,0.08);
             --shadow-medium: 0 10px 30px rgba(0,0,0,0.15);
         }
+        body { font-family: 'Montserrat', sans-serif; background: var(--background-light); color: var(--text-dark); padding-top: 100px; margin: 0;}
+        /* ...and so on. Copy all your existing styles to maintain consistency. */
+        
+        /* --- NEW STYLES FOR DETAILS PAGE & CAROUSEL --- */
+        .listing-detail-container { padding: 2rem 0 4rem 0; }
+        .back-link { display: inline-block; margin-bottom: 2rem; color: var(--primary-color); text-decoration: none; font-weight: 600; }
+        .back-link:hover { text-decoration: underline; }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        .listing-header { margin-bottom: 2rem; }
+        .listing-header h1 { font-family: 'Playfair Display', serif; font-size: 2.8rem; color: var(--primary-color); margin: 0; }
+        .listing-header .price { font-size: 2.2rem; font-weight: 700; color: var(--secondary-color); }
         
-        body {
-            font-family: 'Montserrat', sans-serif;
-            line-height: 1.7;
-            color: var(--text-dark);
-            background: var(--background-light);
-            overflow-x: hidden;
-            padding-top: 100px; /* Adjust for fixed header */
-        }
-        
-        .header {
-            background: var(--gradient-blue);
-            color: var(--text-light);
-            padding: 1rem 0;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-            box-shadow: var(--shadow-medium);
-            transition: all 0.3s ease;
-        }
+        .photo-carousel { position: relative; margin-bottom: 2rem; box-shadow: var(--shadow-medium); }
+        .carousel-image { width: 100%; height: 600px; object-fit: cover; display: block; background-color: #e0e0e0; }
+        .carousel-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(13, 40, 94, 0.7); color: white; border: none; font-size: 2rem; cursor: pointer; padding: 0.5rem 1.5rem; transition: background 0.3s; }
+        .carousel-btn:hover { background: rgba(13, 40, 94, 1); }
+        .prev-btn { left: 0; }
+        .next-btn { right: 0; }
+        .carousel-counter { position: absolute; bottom: 1rem; left: 1rem; background: rgba(13, 40, 94, 0.8); color: white; padding: 0.5rem 1rem; border-radius: 4px; font-size: 0.9rem; }
 
-        .header.scrolled {
-            padding: 0.75rem 0;
-            background: rgba(13, 40, 94, 0.95);
-        }
+        .details-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1.5rem; background: white; padding: 2rem; border-radius: 8px; box-shadow: var(--shadow-light); margin-bottom: 2rem; }
+        .detail-item { font-size: 1.1rem; }
+        .detail-item strong { display: block; color: var(--primary-color); font-weight: 600; }
         
-        .nav-container {
-            max-width: 1300px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 2.5rem;
-        }
-        
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            color: var(--text-light);
-        }
-        
-        .logo:hover {
-            transform: translateY(-2px);
-            color: var(--accent-color);
-        }
-        
-        .logo-image-file {
-            width: 70px;
-            height: 70px;
-            object-fit: contain;
-            border-radius: 50%;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-            background-color: white;
-            padding: 5px;
-            border: 2px solid var(--accent-color);
-        }
-        
-        .logo-text {
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .logo-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.9rem;
-            font-weight: 700;
-            letter-spacing: 1.5px;
-            margin: 0;
-            line-height: 1;
-        }
-        
-        .logo-subtitle {
-            font-size: 0.8rem;
-            opacity: 0.9;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-        
-        .logo-tagline {
-            font-size: 0.65rem;
-            opacity: 0.7;
-            margin-top: 0.2rem;
-            font-style: italic;
-        }
-        
-        .nav-links {
-            display: flex;
-            gap: 2.5rem;
-            list-style: none;
-            margin: 0;
-            padding: 0;
-        }
-        
-        .nav-links a {
-            color: var(--text-light);
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            padding: 0.6rem 0;
-            position: relative;
-            font-size: 1.05rem;
-            letter-spacing: 0.5px;
-        }
-        
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: 0;
-            left: 50%;
-            background-color: var(--accent-color);
-            transition: width 0.3s ease, left 0.3s ease;
-        }
-        
-        .nav-links a:hover::after {
-            width: 100%;
-            left: 0;
-        }
-
-        .mobile-menu-btn {
-            display: none;
-            background: none;
-            border: none;
-            color: var(--text-light);
-            font-size: 1.8rem;
-            cursor: pointer;
-            padding: 0.5rem;
-            z-index: 1100;
-            position: relative;
-        }
-
-        .mobile-menu-btn .fa-bars, .mobile-menu-btn .fa-times {
-            transition: transform 0.3s ease;
-        }
-        
-        .mobile-nav-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(13, 40, 94, 0.98);
-            z-index: 999;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.4s ease, visibility 0.4s ease;
-        }
-
-        .mobile-nav-overlay.active {
-            display: flex;
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .mobile-nav-overlay .nav-links {
-            flex-direction: column;
-            gap: 1.5rem;
-            text-align: center;
-        }
-
-        .mobile-nav-overlay .nav-links a {
-            font-size: 1.8rem;
-            padding: 1rem 0;
-            color: var(--text-light);
-        }
-
-        .mobile-nav-overlay .nav-links a:hover {
-            color: var(--accent-color);
-        }
-        
-        .page-header {
-            text-align: center;
-            padding: 6rem 0 3rem;
-            color: var(--primary-color);
-        }
-        
-        .page-header h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: 3.5rem;
-            margin-bottom: 0.5rem;
-        }
-        
-        .page-header p {
-            font-size: 1.2rem;
-            color: var(--text-dark);
-            opacity: 0.8;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        
-        .section {
-            padding: 4rem 0;
-        }
-        
-        .container {
-            max-width: 1300px;
-            margin: 0 auto;
-            padding: 0 2.5rem;
-        }
-        
-        .section-title {
-            text-align: center;
-            font-family: 'Playfair Display', serif;
-            font-size: 3rem;
-            margin-bottom: 3rem;
-            color: var(--primary-color);
-            position: relative;
-            font-weight: 700;
-            text-transform: capitalize;
-        }
-        
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: -15px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 70px;
-            height: 4px;
-            background: var(--gradient-gold);
-            border-radius: 2px;
-        }
-        
-        .footer {
-            background: var(--background-dark);
-            color: var(--text-light);
-            text-align: center;
-            padding: 2.5rem 0;
-            font-size: 0.9rem;
-            opacity: 0.9;
-            border-top: 5px solid var(--primary-color);
-        }
-
-        .footer p {
-            margin-bottom: 0.5rem;
-        }
-        
-        .footer a {
-            color: var(--accent-color);
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-        
-        .footer a:hover {
-            color: white;
-            text-decoration: underline;
-        }
-
-        .listings-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 2.5rem;
-            margin-top: 2rem;
-        }
-        
-        .property-card {
-            background: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: var(--shadow-medium);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .property-card-link:hover .property-card {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
-        }
-
-        .property-image {
-            height: 250px;
-            width: 100%;
-            object-fit: cover;
-            background-color: #eee;
-        }
-        
-        .property-details {
-            padding: 1.5rem;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .property-price {
-            font-family: 'Playfair Display', serif;
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--primary-color);
-            margin-bottom: 0.5rem;
-        }
-
-        .property-address {
-            font-size: 1.1rem;
-            font-weight: 500;
-            margin-bottom: 1rem;
-            color: var(--text-dark);
-        }
-
-        .property-specs {
-            display: flex;
-            gap: 1.5rem;
-            margin-top: auto;
-            padding-top: 1rem;
-            border-top: 1px solid #eee;
-            color: #555;
-            font-weight: 500;
-        }
-        
-        .property-specs span {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .search-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-        .total-found {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: var(--text-dark);
-        }
-        .controls {
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-        }
-        .controls select, .controls label {
-            font-size: 1rem;
-            font-family: 'Montserrat', sans-serif;
-        }
-        .controls select {
-            padding: 0.5rem;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            background: white;
-        }
-        .pagination-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 0.5rem;
-            margin-top: 3rem;
-            padding-bottom: 2rem;
-            flex-wrap: wrap;
-        }
-        .pagination-container a, .pagination-container span {
-            display: inline-block;
-            padding: 0.6rem 1rem;
-            border: 1px solid #ddd;
-            background: white;
-            color: var(--primary-color);
-            text-decoration: none;
-            border-radius: 4px;
-            transition: background-color 0.2s, color 0.2s;
-            cursor: pointer;
-        }
-        .pagination-container a:hover {
-            background-color: var(--primary-color);
-            color: white;
-            border-color: var(--primary-color);
-        }
-        .pagination-container .current-page {
-            background-color: var(--primary-color);
-            color: white;
-            border-color: var(--primary-color);
-            cursor: default;
-        }
-        .pagination-container .disabled {
-            color: #aaa;
-            cursor: default;
-            background-color: #f5f5f5;
-        }
-        .pagination-container .disabled:hover {
-            background-color: #f5f5f5;
-            color: #aaa;
-            border-color: #ddd;
-        }
-        
-        @media (max-width: 768px) {
-            .nav-links { display: none; }
-            .mobile-menu-btn { display: block; }
-            body { padding-top: 80px; }
-            .search-header { flex-direction: column; align-items: flex-start; }
-            .listings-grid { grid-template-columns: 1fr; }
-        }
+        .listing-description { background: white; padding: 2rem; border-radius: 8px; box-shadow: var(--shadow-light); }
+        .listing-description h2 { font-family: 'Playfair Display', serif; color: var(--primary-color); margin-bottom: 1rem; }
+        .loading { text-align: center; font-size: 1.5rem; padding: 5rem 0; color: var(--primary-color); }
     </style>
 </head>
 <body>
-    <header class="header" id="mainHeader">
-        <div class="nav-container">
-            <a href="index.html" class="logo">
-                <img src="legacy%20logo.png" alt="Legacy Real Estate Logo" class="logo-image-file">
-                <div class="logo-text">
-                    <div class="logo-title">Garrett Schaede</div>
-                    <div class="logo-subtitle">Real Estate</div>
-                    <div class="logo-tagline">INTEGRITY | INNOVATION | EXCELLENCE</div>
-                    <div class="logo-tagline">MLS 201633 </div>
-                </div>
-            </a>
-            <nav>
-                <ul class="nav-links">
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="index.html#about">About</a></li>
-                    <li><a href="listings.html">Properties</a></li>
-                    <li><a href="index.html#services">Services</a></li>
-                    <li><a href="index.html#contact">Contact</a></li>
-                </ul>
-                <button class="mobile-menu-btn" onclick="toggleMobileNav()">
-                    <i class="fas fa-bars" id="hamburgerIcon"></i>
-                </button>
-            </nav>
-        </div>
-    </header>
+    <header class="header" id="mainHeader">...</header>
+    <div class="mobile-nav-overlay" id="mobileNav">...</div>
 
-    <div class="mobile-nav-overlay" id="mobileNav">
-        <button class="mobile-menu-btn" onclick="toggleMobileNav()" style="position: absolute; top: 1.5rem; right: 2rem;">
-            <i class="fas fa-times"></i>
-        </button>
-        <ul class="nav-links">
-            <li><a href="index.html" onclick="toggleMobileNav()">Home</a></li>
-            <li><a href="index.html#about" onclick="toggleMobileNav()">About</a></li>
-            <li><a href="listings.html" onclick="toggleMobileNav()">Properties</a></li>
-            <li><a href="index.html#services" onclick="toggleMobileNav()">Services</a></li>
-            <li><a href="index.html#contact" onclick="toggleMobileNav()">Contact</a></li>
-        </ul>
+    <div class="container listing-detail-container" id="listing-content">
+        <div class="loading">Loading Listing Details...</div>
     </div>
 
-    <div class="page-header">
-        <div class="container">
-            <h1>Our Listings</h1>
-            <p>Explore our selection of featured properties on Grand Lake, Oklahoma.</p>
-        </div>
-    </div>
-    
-    <section id="listings-section" class="section">
-        <div class="container" id="listings-container">
-            
-            <div class="search-header">
-                <div class="total-found" id="total-found">Loading...</div>
-                <div class="controls">
-                    <label for="limit-select">Listings Per Page:</label>
-                    <select id="limit-select">
-                        <option value="15">15</option>
-                        <option value="30">30</option>
-                        <option value="45">45</option>
-                    </select>
-                    <select id="sort-select">
-                        <option value="RecentlyUpdated">Recently Updated</option>
-                        <option value="PriceLowHigh">Price: Low to High</option>
-                        <option value="PriceHighLow">Price: High to Low</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="listings-grid" id="listings-grid">
-                <!-- Listing cards will be injected here by JavaScript -->
-            </div>
-
-            <div class="pagination-container" id="pagination-container">
-                <!-- Pagination links will be injected here by JavaScript -->
-            </div>
-
-        </div>
-    </section>
-
-    <footer class="footer">
-        <div class="container">
-            <p>&copy; 2025 Legacy Real Estate. All rights reserved. | Garrett Schaede MLS 201633, Grand Lake Real Estate Specialist</p>
-            <p>Serving Grand Lake o' the Cherokees and Grove, Oklahoma | Integrity | Innovation | Excellence</p>
-            <p style="margin-top: 1rem; font-size: 0.8rem; opacity: 0.7;">
-                Site Design by <a href="https://redeemeddigital.com" target="_blank">Redeemed Digital</a>
-            </p>
-            <div class="social-links" style="margin-top: 1rem;">
-                <a href="YOUR_FACEBOOK_PAGE_URL" target="_blank" aria-label="Facebook Page">
-                    <i class="fab fa-facebook-square" style="font-size: 2rem; color: #a87d3e; transition: color 0.3s ease;"></i>
-                </a>
-            </div>
-        </div>
-    </footer>
+    <footer class="footer">...</footer>
 
     <script>
-        // --- MOBILE NAVIGATION & HEADER SCROLL ---
-        function toggleMobileNav() {
-            const mobileNav = document.getElementById('mobileNav');
-            mobileNav.classList.toggle('active');
-            const hamburgerIcon = document.getElementById('hamburgerIcon');
-            hamburgerIcon.classList.toggle('fa-bars');
-            hamburgerIcon.classList.toggle('fa-times');
-        }
-        window.addEventListener('scroll', function() {
-            const header = document.getElementById('mainHeader');
-            if (window.scrollY > 50) {
-                header.classList.add('scrolled');
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const listingKey = params.get('listingKey');
+
+            if (listingKey) {
+                fetchListingDetails(listingKey);
             } else {
-                header.classList.remove('scrolled');
+                document.getElementById('listing-content').innerHTML = '<div class="loading">Error: No listing specified.</div>';
             }
         });
 
-        // --- PAGINATION & SORTING LOGIC ---
-        let currentPage = 1;
-        let listingsPerPage = 15;
-        let currentSort = 'RecentlyUpdated';
-        let totalListings = 0;
-
-        document.addEventListener('DOMContentLoaded', () => {
-            setupControls();
-            fetchAndDisplayListings();
-        });
-
-        function setupControls() {
-            document.getElementById('limit-select').addEventListener('change', (e) => {
-                listingsPerPage = parseInt(e.target.value);
-                currentPage = 1; // Reset to first page
-                fetchAndDisplayListings();
-            });
-            document.getElementById('sort-select').addEventListener('change', (e) => {
-                currentSort = e.target.value;
-                currentPage = 1; // Reset to first page
-                fetchAndDisplayListings();
-            });
-        }
-
-        async function fetchAndDisplayListings() {
-            const grid = document.getElementById('listings-grid');
-            grid.innerHTML = '<p style="text-align:center; font-size:1.2rem; grid-column: 1 / -1;">Loading listings...</p>';
-            
-            const proxyEndpoint = `/.netlify/functions/get-listings?page=${currentPage}&limit=${listingsPerPage}&sort=${currentSort}`;
-            
+        async function fetchListingDetails(listingKey) {
+            const proxyEndpoint = `/.netlify/functions/get-listings?listingKey=${listingKey}`;
             try {
                 const response = await fetch(proxyEndpoint);
-                if (!response.ok) throw new Error(`API request failed`);
+                if (!response.ok) throw new Error('Failed to fetch details');
                 
                 const data = await response.json();
-                totalListings = data['@odata.count'];
-                displayListings(data.value);
-                setupPagination();
+                const listing = data.value[0]; // The API returns an array with one item
+                displayListingDetails(listing);
 
             } catch (error) {
-                console.error('Failed to fetch listings:', error);
-                grid.innerHTML = `<p style="text-align:center; color:red; grid-column: 1 / -1;">Could not load property listings.</p>`;
+                console.error("Fetch Error:", error);
+                document.getElementById('listing-content').innerHTML = '<div class="loading">Error: Could not load listing details.</div>';
             }
         }
 
-        function displayListings(listings) {
-            document.getElementById('total-found').textContent = `${totalListings} Matches Found`;
-            const grid = document.getElementById('listings-grid');
-            grid.innerHTML = '';
-
-            if (!listings || listings.length === 0) {
-                grid.innerHTML = `<p style="text-align: center; grid-column: 1 / -1;">No properties found matching your criteria.</p>`;
-                return;
-            }
-
-            listings.forEach(listing => {
-                const imageUrl = (listing.Media && listing.Media.length > 0) ? listing.Media[0].MediaURL : 'https://via.placeholder.com/400x250.png?text=No+Image';
-                const card = `
-                    <a href="listing-details.html?listingKey=${listing.ListingKey}" class="property-card-link">
-                        <div class="property-card">
-                            <img src="${imageUrl}" alt="Image of ${listing.UnparsedAddress}" class="property-image">
-                            <div class="property-details">
-                                <div class="property-price">$${listing.ListPrice.toLocaleString()}</div>
-                                <div class="property-address">${listing.UnparsedAddress}</div>
-                                <div class="property-specs">
-                                    <span><i class="fas fa-bed"></i> ${listing.BedroomsTotal || 0}</span>
-                                    <span><i class="fas fa-bath"></i> ${listing.BathroomsTotalInteger || 0}</span>
-                                    <span><i class="fas fa-ruler-combined"></i> ${listing.LivingArea?.toLocaleString() || 'N/A'} sqft</span>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                `;
-                grid.innerHTML += card;
-            });
-        }
-
-        function setupPagination() {
-            const container = document.getElementById('pagination-container');
-            container.innerHTML = '';
-            const totalPages = Math.ceil(totalListings / listingsPerPage);
-
-            if (totalPages <= 1) return;
-
-            const createLink = (page, text, isDisabled = false, isCurrent = false) => {
-                const element = isDisabled || isCurrent ? 'span' : 'a';
-                const link = document.createElement(element);
-                link.textContent = text || page;
-                if (isCurrent) link.classList.add('current-page');
-                if (isDisabled) link.classList.add('disabled');
-                
-                if (!isDisabled && !isCurrent) {
-                    link.href = '#';
-                    link.onclick = (e) => {
-                        e.preventDefault();
-                        currentPage = page;
-                        fetchAndDisplayListings();
-                        document.getElementById('listings-section').scrollIntoView({ behavior: 'smooth' });
-                    };
-                }
-                return link;
-            };
-
-            container.appendChild(createLink(currentPage - 1, 'Previous', currentPage === 1));
-
-            let pages = [];
-            if (totalPages <= 7) {
-                for (let i = 1; i <= totalPages; i++) pages.push(i);
-            } else {
-                pages.push(1);
-                if (currentPage > 3) pages.push('...');
-                if (currentPage > 2) pages.push(currentPage - 1);
-                if (currentPage > 1 && currentPage < totalPages) pages.push(currentPage);
-                if (currentPage < totalPages - 1) pages.push(currentPage + 1);
-                if (currentPage < totalPages - 2) pages.push('...');
-                pages.push(totalPages);
-            }
-
-            let uniquePages = [...new Set(pages)];
+        function displayListingDetails(listing) {
+            const container = document.getElementById('listing-content');
             
-            uniquePages.forEach(page => {
-                if (page === '...') {
-                    const dots = document.createElement('span');
-                    dots.textContent = '...';
-                    container.appendChild(dots);
-                } else {
-                    container.appendChild(createLink(page, page, false, page === currentPage));
+            // Format data for display, with fallbacks for missing data
+            const price = listing.ListPrice ? `$${listing.ListPrice.toLocaleString()}` : 'Price not available';
+            const address = listing.UnparsedAddress || 'Address not available';
+            const propertyType = listing.PropertyType || 'N/A';
+            const bedrooms = listing.BedroomsTotal || 'N/A';
+            const bathrooms = listing.BathroomsFull ? `${listing.BathroomsFull} Full, ${listing.BathroomsHalf || 0} Half` : 'N/A';
+            const sqft = listing.LivingArea ? `${listing.LivingArea.toLocaleString()} sq. ft.` : 'N/A';
+            const lotSize = listing.LotSizeAcres ? `${listing.LotSizeAcres.toLocaleString()} acres` : 'N/A';
+            const status = listing.MlsStatus || 'N/A';
+            const description = listing.PublicRemarks || 'No description provided.';
+            
+            let currentImageIndex = 0;
+            const media = listing.Media || [];
+
+            const detailsHTML = `
+                <a href="properties.html" class="back-link">&larr; Back to search</a>
+                <div class="listing-header">
+                    <h1>${address}</h1>
+                    <div class="price">${price}</div>
+                </div>
+
+                <div class="photo-carousel">
+                    <img src="${media.length > 0 ? media[0].MediaURL : ''}" alt="Photo of ${address}" class="carousel-image" id="carousel-image">
+                    <button class="carousel-btn prev-btn" id="prev-btn">&lsaquo;</button>
+                    <button class="carousel-btn next-btn" id="next-btn">&rsaquo;</button>
+                    <div class="carousel-counter" id="carousel-counter"></div>
+                </div>
+
+                <div class="details-grid">
+                    <div class="detail-item"><strong>Property Type:</strong> ${propertyType}</div>
+                    <div class="detail-item"><strong>Bedrooms:</strong> ${bedrooms}</div>
+                    <div class="detail-item"><strong>Baths:</strong> ${bathrooms}</div>
+                    <div class="detail-item"><strong>Square Footage:</strong> ${sqft}</div>
+                    <div class="detail-item"><strong>Lot Size:</strong> ${lotSize}</div>
+                    <div class="detail-item"><strong>Status:</strong> ${status}</div>
+                </div>
+
+                <div class="listing-description">
+                    <h2>Property Description</h2>
+                    <p>${description}</p>
+                </div>
+            `;
+            
+            container.innerHTML = detailsHTML;
+            
+            // --- Carousel Logic ---
+            if (media.length > 0) {
+                const imgElement = document.getElementById('carousel-image');
+                const counterElement = document.getElementById('carousel-counter');
+                
+                function updateCarousel() {
+                    imgElement.src = media[currentImageIndex].MediaURL;
+                    counterElement.textContent = `Photo ${currentImageIndex + 1} of ${media.length}`;
                 }
-            });
 
-            container.appendChild(createLink(currentPage + 1, 'Next', currentPage === totalPages));
+                document.getElementById('prev-btn').addEventListener('click', () => {
+                    currentImageIndex = (currentImageIndex > 0) ? currentImageIndex - 1 : media.length - 1;
+                    updateCarousel();
+                });
+
+                document.getElementById('next-btn').addEventListener('click', () => {
+                    currentImageIndex = (currentImageIndex < media.length - 1) ? currentImageIndex + 1 : 0;
+                    updateCarousel();
+                });
+                
+                updateCarousel(); // Initial setup
+            } else {
+                 document.querySelector('.photo-carousel').style.display = 'none';
+            }
         }
-
-        const style = document.createElement('style');
-        style.innerHTML = `.property-card-link { text-decoration: none; color: inherit; }`;
-        document.head.appendChild(style);
     </script>
 </body>
 </html>
