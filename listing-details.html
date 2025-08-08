@@ -7,7 +7,6 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* --- Paste ALL the CSS from your properties.html here --- */
         :root {
             --primary-color: #0d285e; /* Dark Blue */
             --secondary-color: #a87d3e; /* Gold/Bronze */
@@ -21,44 +20,194 @@
             --shadow-light: 0 5px 15px rgba(0,0,0,0.08);
             --shadow-medium: 0 10px 30px rgba(0,0,0,0.15);
         }
-        body { font-family: 'Montserrat', sans-serif; background: var(--background-light); color: var(--text-dark); padding-top: 100px; margin: 0;}
-        /* ...and so on. Copy all your existing styles to maintain consistency. */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         
-        /* --- NEW STYLES FOR DETAILS PAGE & CAROUSEL --- */
-        .listing-detail-container { padding: 2rem 0 4rem 0; }
-        .back-link { display: inline-block; margin-bottom: 2rem; color: var(--primary-color); text-decoration: none; font-weight: 600; }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            line-height: 1.7;
+            color: var(--text-dark);
+            background: var(--background-light);
+            overflow-x: hidden;
+            padding-top: 100px;
+        }
+        
+        .header {
+            background: var(--gradient-blue);
+            color: var(--text-light);
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: var(--shadow-medium);
+            transition: all 0.3s ease;
+        }
+
+        .header.scrolled {
+            padding: 0.75rem 0;
+            background: rgba(13, 40, 94, 0.95);
+        }
+        
+        .nav-container {
+            max-width: 1300px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2.5rem;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            text-decoration: none;
+            color: var(--text-light);
+        }
+        
+        .logo-image-file {
+            width: 70px;
+            height: 70px;
+            object-fit: contain;
+            border-radius: 50%;
+            background-color: white;
+            padding: 5px;
+            border: 2px solid var(--accent-color);
+        }
+        
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .logo-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.9rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            margin: 0;
+            line-height: 1;
+        }
+        
+        .logo-subtitle {
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        
+        .logo-tagline {
+            font-size: 0.65rem;
+            opacity: 0.7;
+            margin-top: 0.2rem;
+            font-style: italic;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+        
+        .nav-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.05rem;
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0 2.5rem;
+        }
+
+        .footer {
+            background: var(--background-dark);
+            color: var(--text-light);
+            text-align: center;
+            padding: 2.5rem 0;
+            font-size: 0.9rem;
+            border-top: 5px solid var(--primary-color);
+        }
+
+        .footer p {
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer a {
+            color: var(--accent-color);
+            text-decoration: none;
+        }
+
+        /* --- STYLES FOR DETAILS PAGE & CAROUSEL --- */
+        .listing-detail-container { padding: 4rem 0; }
+        .back-link { display: inline-block; margin-bottom: 2rem; color: var(--primary-color); text-decoration: none; font-weight: 600; font-size: 1.1rem; }
         .back-link:hover { text-decoration: underline; }
 
-        .listing-header { margin-bottom: 2rem; }
-        .listing-header h1 { font-family: 'Playfair Display', serif; font-size: 2.8rem; color: var(--primary-color); margin: 0; }
+        .listing-header { margin-bottom: 2rem; border-bottom: 2px solid #eee; padding-bottom: 2rem; }
+        .listing-header h1 { font-family: 'Playfair Display', serif; font-size: 2.8rem; color: var(--primary-color); margin: 0 0 0.5rem 0; line-height: 1.2; }
         .listing-header .price { font-size: 2.2rem; font-weight: 700; color: var(--secondary-color); }
         
-        .photo-carousel { position: relative; margin-bottom: 2rem; box-shadow: var(--shadow-medium); }
+        .photo-carousel { position: relative; margin-bottom: 2rem; box-shadow: var(--shadow-medium); border-radius: 8px; overflow: hidden; }
         .carousel-image { width: 100%; height: 600px; object-fit: cover; display: block; background-color: #e0e0e0; }
-        .carousel-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(13, 40, 94, 0.7); color: white; border: none; font-size: 2rem; cursor: pointer; padding: 0.5rem 1.5rem; transition: background 0.3s; }
+        .carousel-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(13, 40, 94, 0.7); color: white; border: none; font-size: 2rem; cursor: pointer; padding: 0.5rem 1.5rem; transition: background 0.3s; z-index: 10; }
         .carousel-btn:hover { background: rgba(13, 40, 94, 1); }
-        .prev-btn { left: 0; }
-        .next-btn { right: 0; }
-        .carousel-counter { position: absolute; bottom: 1rem; left: 1rem; background: rgba(13, 40, 94, 0.8); color: white; padding: 0.5rem 1rem; border-radius: 4px; font-size: 0.9rem; }
+        .prev-btn { left: 0; border-radius: 0 5px 5px 0; }
+        .next-btn { right: 0; border-radius: 5px 0 0 5px; }
+        .carousel-counter { position: absolute; bottom: 1rem; left: 1rem; background: rgba(13, 40, 94, 0.8); color: white; padding: 0.5rem 1rem; border-radius: 4px; font-size: 0.9rem; z-index: 10; }
 
         .details-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1.5rem; background: white; padding: 2rem; border-radius: 8px; box-shadow: var(--shadow-light); margin-bottom: 2rem; }
         .detail-item { font-size: 1.1rem; }
-        .detail-item strong { display: block; color: var(--primary-color); font-weight: 600; }
+        .detail-item strong { display: block; color: var(--primary-color); font-weight: 600; margin-bottom: 0.25rem; }
         
-        .listing-description { background: white; padding: 2rem; border-radius: 8px; box-shadow: var(--shadow-light); }
-        .listing-description h2 { font-family: 'Playfair Display', serif; color: var(--primary-color); margin-bottom: 1rem; }
+        .listing-description { background: white; padding: 2rem; border-radius: 8px; box-shadow: var(--shadow-light); line-height: 1.8; }
+        .listing-description h2 { font-family: 'Playfair Display', serif; color: var(--primary-color); margin-bottom: 1rem; border-bottom: 2px solid #eee; padding-bottom: 0.5rem; }
+        
         .loading { text-align: center; font-size: 1.5rem; padding: 5rem 0; color: var(--primary-color); }
     </style>
 </head>
 <body>
-    <header class="header" id="mainHeader">...</header>
-    <div class="mobile-nav-overlay" id="mobileNav">...</div>
+    <header class="header" id="mainHeader">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <img src="legacy%20logo.png" alt="Legacy Real Estate Logo" class="logo-image-file">
+                <div class="logo-text">
+                    <div class="logo-title">Garrett Schaede</div>
+                    <div class="logo-subtitle">Real Estate</div>
+                    <div class="logo-tagline">INTEGRITY | INNOVATION | EXCELLENCE</div>
+                    <div class="logo-tagline">MLS 201633 </div>
+                </div>
+            </a>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="index.html#about">About</a></li>
+                    <li><a href="listings.html">Properties</a></li>
+                    <li><a href="index.html#services">Services</a></li>
+                    <li><a href="index.html#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
 
     <div class="container listing-detail-container" id="listing-content">
         <div class="loading">Loading Listing Details...</div>
     </div>
 
-    <footer class="footer">...</footer>
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Legacy Real Estate. All rights reserved. | Garrett Schaede MLS 201633, Grand Lake Real Estate Specialist</p>
+            <p>Serving Grand Lake o' the Cherokees and Grove, Oklahoma | Integrity | Innovation | Excellence</p>
+            <p style="margin-top: 1rem; font-size: 0.8rem; opacity: 0.7;">
+                Site Design by <a href="https://redeemeddigital.com" target="_blank">Redeemed Digital</a>
+            </p>
+        </div>
+    </footer>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -68,37 +217,45 @@
             if (listingKey) {
                 fetchListingDetails(listingKey);
             } else {
-                document.getElementById('listing-content').innerHTML = '<div class="loading">Error: No listing specified.</div>';
+                document.getElementById('listing-content').innerHTML = '<div class="loading">Error: No listing was specified in the URL.</div>';
             }
         });
 
         async function fetchListingDetails(listingKey) {
+            const contentContainer = document.getElementById('listing-content');
             const proxyEndpoint = `/.netlify/functions/get-listings?listingKey=${listingKey}`;
+            
             try {
                 const response = await fetch(proxyEndpoint);
-                if (!response.ok) throw new Error('Failed to fetch details');
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch details. Server responded with status: ${response.status}`);
+                }
                 
                 const data = await response.json();
-                const listing = data.value[0]; // The API returns an array with one item
-                displayListingDetails(listing);
+
+                if (data.value && data.value.length > 0) {
+                    const listing = data.value[0];
+                    displayListingDetails(listing);
+                } else {
+                    throw new Error(`Listing with key "${listingKey}" not found.`);
+                }
 
             } catch (error) {
                 console.error("Fetch Error:", error);
-                document.getElementById('listing-content').innerHTML = '<div class="loading">Error: Could not load listing details.</div>';
+                contentContainer.innerHTML = `<div class="loading">Error: Could not load listing details. Please try again or go back to the listings page. <br><br><i><small>${error.message}</small></i></div>`;
             }
         }
 
         function displayListingDetails(listing) {
             const container = document.getElementById('listing-content');
             
-            // Format data for display, with fallbacks for missing data
             const price = listing.ListPrice ? `$${listing.ListPrice.toLocaleString()}` : 'Price not available';
             const address = listing.UnparsedAddress || 'Address not available';
             const propertyType = listing.PropertyType || 'N/A';
             const bedrooms = listing.BedroomsTotal || 'N/A';
-            const bathrooms = listing.BathroomsFull ? `${listing.BathroomsFull} Full, ${listing.BathroomsHalf || 0} Half` : 'N/A';
+            const bathrooms = listing.BathroomsTotalInteger ? `${listing.BathroomsTotalInteger}` : 'N/A';
             const sqft = listing.LivingArea ? `${listing.LivingArea.toLocaleString()} sq. ft.` : 'N/A';
-            const lotSize = listing.LotSizeAcres ? `${listing.LotSizeAcres.toLocaleString()} acres` : 'N/A';
+            const lotSize = listing.LotSizeAcres ? `${listing.LotSizeAcres.toLocaleString()} acres` : (listing.LotSizeSquareFeet ? `${listing.LotSizeSquareFeet.toLocaleString()} sq. ft.` : 'N/A');
             const status = listing.MlsStatus || 'N/A';
             const description = listing.PublicRemarks || 'No description provided.';
             
@@ -106,7 +263,7 @@
             const media = listing.Media || [];
 
             const detailsHTML = `
-                <a href="properties.html" class="back-link">&larr; Back to search</a>
+                <a href="listings.html" class="back-link">&larr; Back to Listings</a>
                 <div class="listing-header">
                     <h1>${address}</h1>
                     <div class="price">${price}</div>
@@ -114,9 +271,9 @@
 
                 <div class="photo-carousel">
                     <img src="${media.length > 0 ? media[0].MediaURL : ''}" alt="Photo of ${address}" class="carousel-image" id="carousel-image">
-                    <button class="carousel-btn prev-btn" id="prev-btn">&lsaquo;</button>
-                    <button class="carousel-btn next-btn" id="next-btn">&rsaquo;</button>
-                    <div class="carousel-counter" id="carousel-counter"></div>
+                    <button class="carousel-btn prev-btn" id="prev-btn" style="display: ${media.length > 1 ? 'block' : 'none'};">&lsaquo;</button>
+                    <button class="carousel-btn next-btn" id="next-btn" style="display: ${media.length > 1 ? 'block' : 'none'};">&rsaquo;</button>
+                    <div class="carousel-counter" id="carousel-counter" style="display: ${media.length > 1 ? 'block' : 'none'};"></div>
                 </div>
 
                 <div class="details-grid">
@@ -136,8 +293,7 @@
             
             container.innerHTML = detailsHTML;
             
-            // --- Carousel Logic ---
-            if (media.length > 0) {
+            if (media.length > 1) {
                 const imgElement = document.getElementById('carousel-image');
                 const counterElement = document.getElementById('carousel-counter');
                 
@@ -156,8 +312,8 @@
                     updateCarousel();
                 });
                 
-                updateCarousel(); // Initial setup
-            } else {
+                updateCarousel();
+            } else if (media.length === 0) {
                  document.querySelector('.photo-carousel').style.display = 'none';
             }
         }
