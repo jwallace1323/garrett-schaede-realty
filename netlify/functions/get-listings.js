@@ -16,10 +16,10 @@ exports.handler = async function(event, context) {
   if (listingKey) {
     // We will use the $filter method as it's more standard.
     console.log(`Fetching single listing with key: ${listingKey}`);
-    apiUrl = `https://replication.sparkapi.com/Version/3/Reso/OData/Property?` +
-               `$filter=ListingKey eq '${listingKey}'` +
-               `&$expand=Media,Rooms`;
-    console.log(`Constructed API URL for single listing: ${apiUrl}`);
+    // New, corrected line
+apiUrl = `https://replication.sparkapi.com/Version/3/Reso/OData/Property?` +
+           `$filter=ListingKey eq '${listingKey}'` +
+           `&$expand=Media,Room`; // Changed "Rooms" to "Room"    console.log(`Constructed API URL for single listing: ${apiUrl}`);
   } else {
     // This logic for fetching all listings remains the same.
     const skip = (parseInt(page) - 1) * parseInt(limit);
