@@ -587,6 +587,9 @@
         }
 
         function displayListings(listings) {
+             // --- TEMPORARY LINE FOR DEBUGGING ---
+    console.log(listings); 
+    // ------------------------------------
             document.getElementById('total-found').textContent = `${totalListings} Matches Found`;
             const grid = document.getElementById('listings-grid');
             grid.innerHTML = '';
