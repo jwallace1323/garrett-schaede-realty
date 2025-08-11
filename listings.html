@@ -21,12 +21,7 @@
             --shadow-medium: 0 10px 30px rgba(0,0,0,0.15);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Montserrat', sans-serif;
             line-height: 1.7;
@@ -35,7 +30,7 @@
             overflow-x: hidden;
             padding-top: 100px;
         }
-        
+
         .header {
             background: var(--gradient-blue);
             color: var(--text-light);
@@ -47,12 +42,8 @@
             box-shadow: var(--shadow-medium);
             transition: all 0.3s ease;
         }
+        .header.scrolled { padding: 0.75rem 0; background: rgba(13, 40, 94, 0.95); }
 
-        .header.scrolled {
-            padding: 0.75rem 0;
-            background: rgba(13, 40, 94, 0.95);
-        }
-        
         .nav-container {
             max-width: 1300px;
             margin: 0 auto;
@@ -61,124 +52,34 @@
             align-items: center;
             padding: 0 2.5rem;
         }
-        
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-            text-decoration: none;
-            color: var(--text-light);
-        }
-        
+        .logo { display: flex; align-items: center; gap: 0.8rem; text-decoration: none; color: var(--text-light); }
         .logo-image-file {
-            width: 70px;
-            height: 70px;
-            object-fit: contain;
-            border-radius: 50%;
-            background-color: white;
-            padding: 5px;
-            border: 2px solid var(--accent-color);
+            width: 70px; height: 70px; object-fit: contain; border-radius: 50%;
+            background-color: white; padding: 5px; border: 2px solid var(--accent-color);
         }
-        
-        .logo-text {
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .logo-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.9rem;
-            font-weight: 700;
-            letter-spacing: 1.5px;
-            margin: 0;
-            line-height: 1;
-        }
-        
-        .logo-subtitle {
-            font-size: 0.8rem;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-        
-        .logo-tagline {
-            font-size: 0.65rem;
-            opacity: 0.7;
-            margin-top: 0.2rem;
-            font-style: italic;
-        }
-        
-        .nav-links {
-            display: flex;
-            gap: 2.5rem;
-            list-style: none;
-        }
-        
-        .nav-links a {
-            color: var(--text-light);
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 1.05rem;
-        }
+        .logo-text { display: flex; flex-direction: column; }
+        .logo-title { font-family: 'Playfair Display', serif; font-size: 1.9rem; font-weight: 700; letter-spacing: 1.5px; line-height: 1; }
+        .logo-subtitle { font-size: 0.8rem; letter-spacing: 1px; text-transform: uppercase; }
+        .logo-tagline { font-size: 0.65rem; opacity: 0.7; margin-top: 0.2rem; font-style: italic; }
 
-        .mobile-menu-btn {
-            display: none;
-            background: none;
-            border: none;
-            color: var(--text-light);
-            font-size: 1.8rem;
-            cursor: pointer;
-            padding: 0.5rem;
-            z-index: 1100;
-        }
+        .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+        .nav-links a { color: var(--text-light); text-decoration: none; font-weight: 500; font-size: 1.05rem; }
 
+        .mobile-menu-btn { display: none; background: none; border: none; color: var(--text-light); font-size: 1.8rem; cursor: pointer; padding: 0.5rem; z-index: 1100; }
         .mobile-nav-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(13, 40, 94, 0.98);
-            z-index: 999;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(13, 40, 94, 0.98); z-index: 999;
+            flex-direction: column; justify-content: center; align-items: center;
         }
+        .mobile-nav-overlay.active { display: flex; }
 
-        .mobile-nav-overlay.active {
-            display: flex;
-        }
-        
-        .page-header {
-            text-align: center;
-            padding: 6rem 0 3rem;
-            color: var(--primary-color);
-        }
-        
-        .page-header h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: 3.5rem;
-            margin-bottom: 0.5rem;
-        }
-        
-        .page-header p {
-            font-size: 1.2rem;
-            color: var(--text-dark);
-            opacity: 0.8;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        
-        .section {
-            padding: 4rem 0;
-        }
-        
-        .container {
-            max-width: 1300px;
-            margin: 0 auto;
-            padding: 0 2.5rem;
-        }
-        
+        .page-header { text-align: center; padding: 6rem 0 3rem; color: var(--primary-color); }
+        .page-header h1 { font-family: 'Playfair Display', serif; font-size: 3.5rem; margin-bottom: 0.5rem; }
+        .page-header p { font-size: 1.2rem; color: var(--text-dark); opacity: 0.8; max-width: 800px; margin: 0 auto; }
+
+        .section { padding: 4rem 0; }
+        .container { max-width: 1300px; margin: 0 auto; padding: 0 2.5rem; }
+
         .footer {
             background: var(--background-dark);
             color: var(--text-light);
@@ -187,7 +88,6 @@
             font-size: 0.9rem;
             border-top: 5px solid var(--primary-color);
         }
-
         .footer p { margin-bottom: 0.5rem; }
         .footer a { color: var(--accent-color); text-decoration: none; }
 
@@ -197,151 +97,60 @@
             gap: 2.5rem;
             margin-top: 2rem;
         }
-        
         .property-card {
-            background: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: var(--shadow-medium);
+            background: white; border-radius: 8px; overflow: hidden; box-shadow: var(--shadow-medium);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-            display: flex;
-            flex-direction: column;
-            height: 100%;
+            display: flex; flex-direction: column; height: 100%;
         }
+        .property-card-link:hover .property-card { transform: translateY(-10px); box-shadow: 0 15px 40px rgba(0,0,0,0.2); }
+        .property-image { height: 250px; width: 100%; object-fit: cover; background-color: #eee; }
+        .property-details { padding: 1.5rem; flex-grow: 1; display: flex; flex-direction: column; }
+        .property-price { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; color: var(--primary-color); margin-bottom: 0.5rem; }
+        .property-address { font-size: 1.1rem; font-weight: 500; margin-bottom: 1rem; color: var(--text-dark); }
+        .property-specs { display: flex; gap: 1.5rem; margin-top: auto; padding-top: 1rem; border-top: 1px solid #eee; color: #555; font-weight: 500; }
+        .property-specs span { display: flex; align-items: center; gap: 0.5rem; }
 
-        .property-card-link:hover .property-card {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
-        }
+        .search-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem; }
+        .total-found { font-size: 1.2rem; font-weight: 600; color: var(--text-dark); }
+        .controls { display: flex; gap: 1rem; align-items: center; }
+        .controls select, .controls label { font-size: 1rem; font-family: 'Montserrat', sans-serif; }
+        .controls select { padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px; background: white; }
 
-        .property-image {
-            height: 250px;
-            width: 100%;
-            object-fit: cover;
-            background-color: #eee;
-        }
-        
-        .property-details {
-            padding: 1.5rem;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .property-price {
-            font-family: 'Playfair Display', serif;
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--primary-color);
-            margin-bottom: 0.5rem;
-        }
-
-        .property-address {
-            font-size: 1.1rem;
-            font-weight: 500;
-            margin-bottom: 1rem;
-            color: var(--text-dark);
-        }
-
-        .property-specs {
-            display: flex;
-            gap: 1.5rem;
-            margin-top: auto;
-            padding-top: 1rem;
-            border-top: 1px solid #eee;
-            color: #555;
-            font-weight: 500;
-        }
-        
-        .property-specs span {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .search-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-        .total-found {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: var(--text-dark);
-        }
-        .controls {
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-        }
-        .controls select, .controls label {
-            font-size: 1rem;
-            font-family: 'Montserrat', sans-serif;
-        }
-        .controls select {
-            padding: 0.5rem;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            background: white;
-        }
         .pagination-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 0.5rem;
-            margin-top: 3rem;
-            padding-bottom: 2rem;
-            flex-wrap: wrap;
+            display: flex; justify-content: center; align-items: center; gap: 0.5rem;
+            margin-top: 3rem; padding-bottom: 2rem; flex-wrap: wrap;
         }
-        #pagination-container-top {
-            margin-top: 0;
-            margin-bottom: 2rem;
-            padding-bottom: 0;
-        }
-        .pagination-container a, .pagination-container span {
-            display: inline-block;
-            padding: 0.6rem 1rem;
-            border: 1px solid #ddd;
-            background: white;
-            color: var(--primary-color);
-            text-decoration: none;
-            border-radius: 4px;
-            transition: background-color 0.2s, color 0.2s;
-            cursor: pointer;
+        #pagination-container-top { margin-top: 0; margin-bottom: 2rem; padding-bottom: 0; }
+
+        .pagination-container a, .pagination-container span.page-btn {
+            display: inline-block; padding: 0.6rem 1rem; border: 1px solid #ddd; background: white;
+            color: var(--primary-color); text-decoration: none; border-radius: 4px;
+            transition: background-color 0.2s, color 0.2s; cursor: pointer;
         }
         .pagination-container a:hover {
-            background-color: var(--primary-color);
-            color: white;
-            border-color: var(--primary-color);
+            background-color: var(--primary-color); color: white; border-color: var(--primary-color);
         }
         .pagination-container .current-page {
-            background-color: var(--primary-color);
-            color: white;
-            border-color: var(--primary-color);
-            cursor: default;
+            background-color: var(--primary-color); color: white; border-color: var(--primary-color); cursor: default;
         }
         .pagination-container .disabled {
-            color: #aaa;
-            cursor: default;
-            background-color: #f5f5f5;
+            color: #aaa; cursor: default; background-color: #f5f5f5; border-color: #eee;
         }
-        
+        .page-status {
+            padding: 0.6rem 1rem; font-weight: 600; color: var(--primary-color);
+        }
+        .sr-only {
+            position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden;
+            clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+        }
+
         .property-card-footer {
-            padding: 0.75rem 1.5rem;
-            background-color: #f8f9fa;
-            border-top: 1px solid #eee;
-            font-size: 0.85rem;
-            color: #6c757d;
-            margin-top: auto;
+            padding: 0.75rem 1.5rem; background-color: #f8f9fa; border-top: 1px solid #eee;
+            font-size: 0.85rem; color: #6c757d; margin-top: auto;
         }
-        .property-card-footer strong {
-            color: #495057;
-        }
+        .property-card-footer strong { color: #495057; }
         .property-card-link { text-decoration: none; color: inherit; display: flex; flex-direction: column; height: 100%; }
-        
+
         @media (max-width: 768px) {
             .nav-links { display: none; }
             .mobile-menu-btn { display: block; }
@@ -354,35 +163,35 @@
 <body>
     <header class="header" id="mainHeader">
         <div class="nav-container">
-            <a href="index.html" class="logo">
+            <a href="index.html" class="logo" aria-label="Go to homepage">
                 <img src="legacy%20logo.png" alt="Legacy Real Estate Logo" class="logo-image-file">
                 <div class="logo-text">
                     <div class="logo-title">Garrett Schaede</div>
                     <div class="logo-subtitle">Real Estate</div>
                     <div class="logo-tagline">INTEGRITY | INNOVATION | EXCELLENCE</div>
-                    <div class="logo-tagline">MLS 201633 </div>
+                    <div class="logo-tagline">MLS 201633</div>
                 </div>
             </a>
             <nav>
-                <ul class="nav-links">
+                <ul class="nav-links" aria-label="Main navigation">
                     <li><a href="index.html">Home</a></li>
                     <li><a href="index.html#about">About</a></li>
-                    <li><a href="listings.html">Properties</a></li>
+                    <li><a href="listings.html" aria-current="page">Properties</a></li>
                     <li><a href="index.html#services">Services</a></li>
                     <li><a href="index.html#contact">Contact</a></li>
                 </ul>
-                <button class="mobile-menu-btn" onclick="toggleMobileNav()">
-                    <i class="fas fa-bars" id="hamburgerIcon"></i>
+                <button class="mobile-menu-btn" onclick="toggleMobileNav()" aria-label="Open menu">
+                    <i class="fas fa-bars" id="hamburgerIcon" aria-hidden="true"></i>
                 </button>
             </nav>
         </div>
     </header>
 
-    <div class="mobile-nav-overlay" id="mobileNav">
-        <button class="mobile-menu-btn" onclick="toggleMobileNav()" style="position: absolute; top: 1.5rem; right: 2rem;">
-            <i class="fas fa-times"></i>
+    <div class="mobile-nav-overlay" id="mobileNav" aria-hidden="true">
+        <button class="mobile-menu-btn" onclick="toggleMobileNav()" style="position: absolute; top: 1.5rem; right: 2rem;" aria-label="Close menu">
+            <i class="fas fa-times" aria-hidden="true"></i>
         </button>
-        <ul class="nav-links">
+        <ul class="nav-links" aria-label="Mobile navigation">
             <li><a href="index.html" onclick="toggleMobileNav()">Home</a></li>
             <li><a href="index.html#about" onclick="toggleMobileNav()">About</a></li>
             <li><a href="listings.html" onclick="toggleMobileNav()">Properties</a></li>
@@ -397,20 +206,21 @@
             <p>Explore our selection of featured properties on Grand Lake, Oklahoma.</p>
         </div>
     </div>
-    
-    <section id="listings-section" class="section">
+
+    <section id="listings-section" class="section" aria-label="Property listings">
         <div class="container" id="listings-container">
-            
+
             <div class="search-header">
                 <div class="total-found" id="total-found">Loading...</div>
                 <div class="controls">
                     <label for="limit-select">Listings Per Page:</label>
-                    <select id="limit-select">
+                    <select id="limit-select" aria-label="Listings per page">
                         <option value="15">15</option>
                         <option value="30">30</option>
                         <option value="45">45</option>
                     </select>
-                    <select id="sort-select">
+                    <label class="sr-only" for="sort-select">Sort listings</label>
+                    <select id="sort-select" aria-label="Sort listings">
                         <option value="RecentlyUpdated">Recently Updated</option>
                         <option value="PriceLowHigh">Price: Low to High</option>
                         <option value="PriceHighLow">Price: High to Low</option>
@@ -418,9 +228,16 @@
                 </div>
             </div>
 
-            <div class="pagination-container" id="pagination-container-top"></div>
+            <!-- Top pagination -->
+            <nav class="pagination-container" id="pagination-container-top" aria-label="Listings pagination (top)"></nav>
+
             <div class="listings-grid" id="listings-grid"></div>
-            <div class="pagination-container" id="pagination-container-bottom"></div>
+
+            <!-- Bottom pagination -->
+            <nav class="pagination-container" id="pagination-container-bottom" aria-label="Listings pagination (bottom)"></nav>
+
+            <!-- Live region for page status (accessibility) -->
+            <div id="pagination-status" class="sr-only" aria-live="polite"></div>
 
         </div>
     </section>
@@ -430,12 +247,14 @@
             <p>&copy; 2025 Legacy Real Estate. 117 Anchor Rd Grove, OK 74344. All rights reserved. | Garrett Schaede MLS 201633, Grand Lake Real Estate Specialist</p>
             <p>Serving Grand Lake o' the Cherokees and Grove, Oklahoma | Integrity | Innovation | Excellence</p>
             <p style="margin-top: 1rem; font-size: 0.8rem; opacity: 0.7;">
-                Site Design by <a href="https://redeemeddigital.com" target="_blank">Redeemed Digital</a>
+                Site Design by <a href="https://redeemeddigital.com" target="_blank" rel="noopener">Redeemed Digital</a>
             </p>
-             <div class="social-links" style="margin-top: 1rem;">
-                <a href="https://www.facebook.com/profile.php?id=100090638335625" target="_blank" aria-label="Facebook Page">
+            <div class="social-links" style="margin-top: 1rem;">
+                <a href="https://www.facebook.com/profile.php?id=100090638335625" target="_blank" rel="noopener" aria-label="Facebook Page">
                     <i class="fab fa-facebook-square" style="font-size: 2rem; color: #a87d3e; transition: color 0.3s ease;"></i>
-             </div>
+                </a>
+            </div>
+        </div>
     </footer>
 
     <script>
@@ -443,18 +262,18 @@
         let currentPage = 1;
         let listingsPerPage = 15;
         let currentSort = 'RecentlyUpdated';
+        let keyboardBound = false; // prevent duplicate key listeners
 
         function toggleMobileNav() {
-            document.getElementById('mobileNav').classList.toggle('active');
+            const el = document.getElementById('mobileNav');
+            const isActive = el.classList.toggle('active');
+            el.setAttribute('aria-hidden', String(!isActive));
         }
 
         window.addEventListener('scroll', function() {
             const header = document.getElementById('mainHeader');
-            if (window.scrollY > 50) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
+            if (window.scrollY > 50) { header.classList.add('scrolled'); }
+            else { header.classList.remove('scrolled'); }
         });
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -464,7 +283,7 @@
 
         function setupControls() {
             document.getElementById('limit-select').addEventListener('change', (e) => {
-                listingsPerPage = parseInt(e.target.value);
+                listingsPerPage = parseInt(e.target.value, 10);
                 currentPage = 1;
                 renderPage(); // Re-render with new page size
             });
@@ -478,21 +297,23 @@
         async function fetchAllListings() {
             const grid = document.getElementById('listings-grid');
             grid.innerHTML = '<p style="text-align:center; font-size:1.2rem; grid-column: 1 / -1;">Loading listings...</p>';
-            
+
             const proxyEndpoint = `/.netlify/functions/get-listings`;
-            
+
             try {
                 const response = await fetch(proxyEndpoint);
                 if (!response.ok) throw new Error(`API request failed`);
-                
+
                 const data = await response.json();
-                allListings = data.value; // Store all listings
-                document.getElementById('total-found').textContent = `${data['@odata.count']} Matches Found`;
+                allListings = data.value || []; // Store all listings
+                document.getElementById('total-found').textContent = `${data['@odata.count'] ?? allListings.length} Matches Found`;
                 renderPage(); // Render the first page
 
             } catch (error) {
                 console.error('Failed to fetch listings:', error);
                 grid.innerHTML = `<p style="text-align:center; color:red; grid-column: 1 / -1;">Could not load property listings.</p>`;
+                document.getElementById('total-found').textContent = '0 Matches Found';
+                setupPagination(0);
             }
         }
 
@@ -531,7 +352,7 @@
                 }
                 return 0;
             });
-            
+
             // --- PAGINATION LOGIC ---
             const startIndex = (currentPage - 1) * listingsPerPage;
             const endIndex = startIndex + listingsPerPage;
@@ -539,6 +360,7 @@
 
             displayListings(paginatedListings);
             setupPagination(sortedListings.length);
+            announcePage(); // accessibility status
         }
 
         function displayListings(listings) {
@@ -552,21 +374,24 @@
 
             listings.forEach(listing => {
                 const imageUrl = (listing.Media && listing.Media.length > 0) ? listing.Media[0].MediaURL : 'https://via.placeholder.com/400x250.png?text=No+Image';
-                const modifiedDate = listing.ModificationTimestamp 
+                const modifiedDate = listing.ModificationTimestamp
                     ? new Date(listing.ModificationTimestamp).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
                     : 'N/A';
 
+                const price = (listing.ListPrice || 0);
+                const livingArea = listing.LivingArea != null ? Number(listing.LivingArea).toLocaleString() : 'N/A';
+
                 const card = `
-                    <a href="listing-details.html?listingKey=${listing.ListingKey}" class="property-card-link">
+                    <a href="listing-details.html?listingKey=${encodeURIComponent(listing.ListingKey)}" class="property-card-link" aria-label="View details for ${listing.UnparsedAddress || 'this property'}">
                         <div class="property-card">
-                            <img src="${imageUrl}" alt="Image of ${listing.UnparsedAddress}" class="property-image">
+                            <img src="${imageUrl}" alt="Image of ${listing.UnparsedAddress || 'property'}" class="property-image" loading="lazy">
                             <div class="property-details">
-                                <div class="property-price">$${(listing.ListPrice || 0).toLocaleString()}</div>
+                                <div class="property-price">$${price.toLocaleString()}</div>
                                 <div class="property-address">${listing.UnparsedAddress || 'Address unavailable'}</div>
                                 <div class="property-specs">
-                                    <span><i class="fas fa-bed"></i> ${listing.BedroomsTotal || 0}</span>
-                                    <span><i class="fas fa-bath"></i> ${listing.BathroomsTotalInteger || 0}</span>
-                                    <span><i class="fas fa-ruler-combined"></i> ${listing.LivingArea?.toLocaleString() || 'N/A'} sqft</span>
+                                    <span><i class="fas fa-bed" aria-hidden="true"></i> ${listing.BedroomsTotal ?? 0}</span>
+                                    <span><i class="fas fa-bath" aria-hidden="true"></i> ${listing.BathroomsTotalInteger ?? 0}</span>
+                                    <span><i class="fas fa-ruler-combined" aria-hidden="true"></i> ${livingArea} sqft</span>
                                 </div>
                             </div>
                             <div class="property-card-footer">
@@ -576,7 +401,7 @@
                         </div>
                     </a>
                 `;
-                grid.innerHTML += card;
+                grid.insertAdjacentHTML('beforeend', card);
             });
         }
 
@@ -586,69 +411,104 @@
             topContainer.innerHTML = '';
             bottomContainer.innerHTML = '';
 
-            const totalPages = Math.ceil(totalItems / listingsPerPage);
+            const totalPages = Math.ceil(totalItems / listingsPerPage) || 1;
 
             if (totalPages <= 1) {
                 topContainer.style.display = 'none';
                 bottomContainer.style.display = 'none';
                 return;
             }
-            
+
             topContainer.style.display = 'flex';
             bottomContainer.style.display = 'flex';
 
             const createLinkHTML = (page, text, isDisabled = false, isCurrent = false) => {
-                const tag = isDisabled || isCurrent ? 'span' : 'a';
-                const classes = [];
+                const classes = ['page-btn'];
                 if (isCurrent) classes.push('current-page');
                 if (isDisabled) classes.push('disabled');
-                return `<${tag} class="${classes.join(' ')}" data-page="${page}">${text || page}</${tag}>`;
+                const label = text || page;
+
+                if (isDisabled || isCurrent) {
+                    return `<span class="${classes.join(' ')}" aria-disabled="true" ${isCurrent ? 'aria-current="page"' : ''} data-page="${page}">${label}</span>`;
+                }
+                return `<a href="#" class="${classes.join(' ')}" data-page="${page}" aria-label="Go to page ${page}">${label}</a>`;
             };
 
-            let paginationHTML = '';
-            paginationHTML += createLinkHTML(currentPage - 1, 'Previous', currentPage === 1);
+            const buildPager = () => {
+                let html = '';
+                html += createLinkHTML(Math.max(1, currentPage - 1), 'Previous', currentPage === 1);
 
-            let pages = [];
-            if (totalPages <= 7) {
-                for (let i = 1; i <= totalPages; i++) pages.push(i);
-            } else {
-                pages.push(1);
-                if (currentPage > 3) pages.push('...');
-                if (currentPage > 2) pages.push(currentPage - 1);
-                if (currentPage > 1 && currentPage < totalPages) pages.push(currentPage);
-                if (currentPage < totalPages - 1) pages.push(currentPage + 1);
-                if (currentPage < totalPages - 2) pages.push('...');
-                pages.push(totalPages);
-            }
-
-            let uniquePages = [...new Set(pages)];
-            uniquePages.forEach(page => {
-                if (page === '...') {
-                    paginationHTML += `<span>...</span>`;
+                let pages = [];
+                if (totalPages <= 7) {
+                    for (let i = 1; i <= totalPages; i++) pages.push(i);
                 } else {
-                    paginationHTML += createLinkHTML(page, page, false, page === currentPage);
+                    pages.push(1);
+                    if (currentPage > 3) pages.push('...');
+                    if (currentPage > 2) pages.push(currentPage - 1);
+                    if (currentPage > 1 && currentPage < totalPages) pages.push(currentPage);
+                    if (currentPage < totalPages - 1) pages.push(currentPage + 1);
+                    if (currentPage < totalPages - 2) pages.push('...');
+                    pages.push(totalPages);
                 }
-            });
 
-            paginationHTML += createLinkHTML(currentPage + 1, 'Next', currentPage === totalPages);
+                [...new Set(pages)].forEach(page => {
+                    if (page === '...') {
+                        html += `<span class="page-btn disabled" aria-hidden="true">...</span>`;
+                    } else {
+                        html += createLinkHTML(page, String(page), false, page === currentPage);
+                    }
+                });
 
-            topContainer.innerHTML = paginationHTML;
-            bottomContainer.innerHTML = paginationHTML;
+                html += createLinkHTML(Math.min(totalPages, currentPage + 1), 'Next', currentPage === totalPages);
+
+                // Page status in the middle
+                html += `<span class="page-status" aria-hidden="true">Page ${currentPage} of ${totalPages}</span>`;
+                return html;
+            };
+
+            const pagerHTML = buildPager();
+            topContainer.innerHTML = pagerHTML;
+            bottomContainer.innerHTML = pagerHTML;
 
             const handlePageClick = (e) => {
-                e.preventDefault();
-                if (e.target.tagName === 'A' && e.target.dataset.page) {
-                    const page = parseInt(e.target.dataset.page);
-                    if (page !== currentPage) {
+                const target = e.target;
+                if (target.tagName === 'A' && target.dataset.page) {
+                    e.preventDefault();
+                    const page = parseInt(target.dataset.page, 10);
+                    if (!Number.isNaN(page) && page !== currentPage) {
                         currentPage = page;
                         renderPage();
                         document.getElementById('listings-section').scrollIntoView({ behavior: 'smooth' });
                     }
                 }
             };
-            
+
             topContainer.onclick = handlePageClick;
             bottomContainer.onclick = handlePageClick;
+
+            // Keyboard navigation (left/right arrows) — attach once
+            if (!keyboardBound) {
+                document.addEventListener('keydown', (e) => {
+                    const totalPagesNow = Math.ceil(totalItems / listingsPerPage) || 1;
+                    if (e.key === "ArrowRight" && currentPage < totalPagesNow) {
+                        currentPage++;
+                        renderPage();
+                        document.getElementById('listings-section').scrollIntoView({ behavior: 'smooth' });
+                    } else if (e.key === "ArrowLeft" && currentPage > 1) {
+                        currentPage--;
+                        renderPage();
+                        document.getElementById('listings-section').scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
+                keyboardBound = true;
+            }
+        }
+
+        function announcePage() {
+            const status = document.getElementById('pagination-status');
+            const totalItems = allListings.length;
+            const totalPages = Math.ceil(totalItems / listingsPerPage) || 1;
+            status.textContent = `Showing page ${currentPage} of ${totalPages}.`;
         }
     </script>
 </body>
