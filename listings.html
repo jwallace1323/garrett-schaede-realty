@@ -8,13 +8,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --primary-color: #0d285e; /* Dark Blue */
-      --secondary-color: #a87d3e; /* Gold/Bronze */
-      --accent-color: #e0b66e;   /* Lighter Gold */
-      --text-dark: #2c3e50;
-      --text-light: #ecf0f1;
-      --background-light: #fdfaf6;
-      --background-dark: #1a2c4a;
+      --primary-color: #0d285e; --secondary-color: #a87d3e; --accent-color: #e0b66e;
+      --text-dark: #2c3e50; --text-light: #ecf0f1;
+      --background-light: #fdfaf6; --background-dark: #1a2c4a;
       --gradient-blue: linear-gradient(135deg, #0d285e 0%, #1a3a6b 100%);
       --shadow-medium: 0 10px 30px rgba(0,0,0,0.15);
     }
@@ -22,11 +18,11 @@
     body { font-family: 'Montserrat', sans-serif; line-height: 1.7; color: var(--text-dark); background: var(--background-light); overflow-x: hidden; padding-top: 100px; }
 
     .header { background: var(--gradient-blue); color: var(--text-light); padding: 1rem 0; position: fixed; width: 100%; top: 0; z-index: 1000; box-shadow: var(--shadow-medium); transition: all 0.3s ease; }
-    .header.scrolled { padding: 0.75rem 0; background: rgba(13, 40, 94, 0.95); }
+    .header.scrolled { padding: 0.75rem 0; background: rgba(13,40,94,0.95); }
 
     .nav-container { max-width: 1300px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 2.5rem; }
     .logo { display: flex; align-items: center; gap: 0.8rem; text-decoration: none; color: var(--text-light); }
-    .logo-image-file { width: 70px; height: 70px; object-fit: contain; border-radius: 50%; background-color: white; padding: 5px; border: 2px solid var(--accent-color); }
+    .logo-image-file { width: 70px; height: 70px; object-fit: contain; border-radius: 50%; background: #fff; padding: 5px; border: 2px solid var(--accent-color); }
     .logo-text { display: flex; flex-direction: column; }
     .logo-title { font-family: 'Playfair Display', serif; font-size: 1.9rem; font-weight: 700; letter-spacing: 1.5px; line-height: 1; }
     .logo-subtitle { font-size: 0.8rem; letter-spacing: 1px; text-transform: uppercase; }
@@ -36,7 +32,7 @@
     .nav-links a { color: var(--text-light); text-decoration: none; font-weight: 500; font-size: 1.05rem; }
 
     .mobile-menu-btn { display: none; background: none; border: none; color: var(--text-light); font-size: 1.8rem; cursor: pointer; padding: 0.5rem; z-index: 1100; }
-    .mobile-nav-overlay { display: none; position: fixed; inset: 0; background: rgba(13, 40, 94, 0.98); z-index: 999; flex-direction: column; justify-content: center; align-items: center; }
+    .mobile-nav-overlay { display: none; position: fixed; inset: 0; background: rgba(13,40,94,0.98); z-index: 999; flex-direction: column; justify-content: center; align-items: center; }
     .mobile-nav-overlay.active { display: flex; }
 
     .page-header { text-align: center; padding: 6rem 0 3rem; color: var(--primary-color); }
@@ -48,29 +44,29 @@
 
     .listings-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 2.5rem; margin-top: 2rem; }
 
-    .property-card { background: white; border-radius: 8px; overflow: hidden; box-shadow: var(--shadow-medium); transition: transform 0.3s ease, box-shadow 0.3s ease; display: flex; flex-direction: column; height: 100%; }
-    .property-card-link:hover .property-card { transform: translateY(-10px); box-shadow: 0 15px 40px rgba(0,0,0,0.2); }
-    .property-image { height: 250px; width: 100%; object-fit: cover; background-color: #eee; }
+    .property-card { background: #fff; border-radius: 8px; overflow: hidden; box-shadow: var(--shadow-medium); transition: transform .3s ease, box-shadow .3s ease; display: flex; flex-direction: column; height: 100%; }
+    .property-card-link:hover .property-card { transform: translateY(-10px); box-shadow: 0 15px 40px rgba(0,0,0,.2); }
+    .property-image { height: 250px; width: 100%; object-fit: cover; background: #eee; }
     .property-details { padding: 1.5rem; flex-grow: 1; display: flex; flex-direction: column; }
     .property-price { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; color: var(--primary-color); margin-bottom: 0.5rem; }
     .property-address { font-size: 1.1rem; font-weight: 500; margin-bottom: 1rem; color: var(--text-dark); }
     .property-specs { display: flex; gap: 1.5rem; margin-top: auto; padding-top: 1rem; border-top: 1px solid #eee; color: #555; font-weight: 500; }
     .property-specs span { display: flex; align-items: center; gap: 0.5rem; }
 
-    /* Remove link underlines and keep color consistent inside cards */
+    /* Make the whole card clickable without underlines */
     .property-card-link, .property-card-link * { text-decoration: none; color: inherit; }
 
     .search-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem; }
     .total-found { font-size: 1.2rem; font-weight: 600; color: var(--text-dark); }
     .controls { display: flex; gap: 1rem; align-items: center; }
     .controls select, .controls label { font-size: 1rem; font-family: 'Montserrat', sans-serif; }
-    .controls select { padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px; background: white; }
+    .controls select { padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px; background: #fff; }
 
     .pagination-container { display: flex; justify-content: center; align-items: center; gap: 0.5rem; margin-top: 3rem; padding-bottom: 2rem; flex-wrap: wrap; }
     #pagination-container-top { margin-top: 0; margin-bottom: 2rem; padding-bottom: 0; }
-    .pagination-container a, .pagination-container span { display: inline-block; padding: 0.6rem 1rem; border: 1px solid #ddd; background: white; color: var(--primary-color); text-decoration: none; border-radius: 4px; transition: background-color 0.2s, color 0.2s; cursor: pointer; }
-    .pagination-container a:hover { background-color: var(--primary-color); color: white; border-color: var(--primary-color); }
-    .pagination-container .current-page { background-color: var(--primary-color); color: white; border-color: var(--primary-color); cursor: default; }
+    .pagination-container a, .pagination-container span { display: inline-block; padding: 0.6rem 1rem; border: 1px solid #ddd; background: #fff; color: var(--primary-color); text-decoration: none; border-radius: 4px; transition: background-color .2s, color .2s; cursor: pointer; }
+    .pagination-container a:hover { background-color: var(--primary-color); color: #fff; border-color: var(--primary-color); }
+    .pagination-container .current-page { background-color: var(--primary-color); color: #fff; border-color: var(--primary-color); cursor: default; }
     .pagination-container .disabled { color: #aaa; cursor: default; background-color: #f5f5f5; border-color: #eee; }
     .page-status { padding: 0.6rem 1rem; font-weight: 600; color: var(--primary-color); }
 
@@ -140,7 +136,7 @@
     <div class="search-header">
       <div class="total-found" id="total-found">Loading...</div>
       <div class="controls">
-        <!-- Removed Listings Per Page control -->
+        <!-- Listings Per Page removed (fixed to 15) -->
         <label class="sr-only" for="sort-select">Sort listings</label>
         <select id="sort-select" aria-label="Sort listings">
           <option value="RecentlyUpdated" selected>Recently Updated</option>
@@ -181,10 +177,13 @@
 
 <script>
   // ---------- STATE ----------
-  let allListings = [];   // holds ALL listings from the API (client-side paging)
   let currentPage = 1;
-  const listingsPerPage = 15; // fixed (control removed)
+  const limit = 15;            // fixed page size
+  let totalCount = 0;          // from API (@odata.count if provided)
   let currentSort = 'RecentlyUpdated';
+  let lastPageItems = 0;       // for fallback when count is unknown
+
+  const API = '/.netlify/functions/get-listings';
 
   function toggleMobileNav() {
     const el = document.getElementById('mobileNav');
@@ -194,101 +193,68 @@
 
   window.addEventListener('scroll', () => {
     const header = document.getElementById('mainHeader');
-    if (window.scrollY > 50) header.classList.add('scrolled');
-    else header.classList.remove('scrolled');
+    if (window.scrollY > 50) header.classList.add('scrolled'); else header.classList.remove('scrolled');
   });
 
   document.addEventListener('DOMContentLoaded', () => {
-    setupControls();
-    fetchAllListings();
-  });
-
-  function setupControls() {
     document.getElementById('sort-select').addEventListener('change', (e) => {
       currentSort = e.target.value;
-      currentPage = 1;
-      renderPage();
+      loadPage(1); // reset to first page on sort change
     });
-  }
+    loadPage(1);
+  });
 
-  async function fetchAllListings() {
+  async function loadPage(page) {
+    currentPage = page;
+
     const grid = document.getElementById('listings-grid');
     grid.innerHTML = '<p style="text-align:center; font-size:1.2rem; grid-column: 1 / -1;">Loading listings...</p>';
 
-    const proxyEndpoint = '/.netlify/functions/get-listings';
-
     try {
-      const response = await fetch(proxyEndpoint);
-      if (!response.ok) throw new Error('API request failed');
+      const url = new URL(API, window.location.origin);
+      url.searchParams.set('page', String(currentPage));
+      url.searchParams.set('limit', String(limit));
+      url.searchParams.set('sort', currentSort);
 
-      const data = await response.json();
-      allListings = Array.isArray(data.value) ? data.value : [];
-      const count = typeof data['@odata.count'] === 'number' ? data['@odata.count'] : allListings.length;
-      document.getElementById('total-found').textContent = `${count} Matches Found`;
+      const res = await fetch(url.toString());
+      if (!res.ok) throw new Error('API request failed');
 
-      renderPage();
-    } catch (error) {
-      console.error('Failed to fetch listings:', error);
+      const data = await res.json();
+      const listings = Array.isArray(data.value) ? data.value : [];
+
+      // Update counts and fallbacks
+      if (typeof data['@odata.count'] === 'number') {
+        totalCount = data['@odata.count'];
+      }
+      lastPageItems = listings.length;
+
+      // Render
+      displayListings(listings);
+
+      // Build pagination
+      setupPagination();
+
+      // Update "Matches Found"
+      const found = totalCount > 0 ? totalCount : (currentPage - 1) * limit + listings.length + ((listings.length === limit) ? '+' : '');
+      document.getElementById('total-found').textContent = totalCount ? `${totalCount} Matches Found` : `${found} Matches Found`;
+
+      document.getElementById('listings-section').scrollIntoView({ behavior: 'smooth' });
+    } catch (err) {
+      console.error('Failed to fetch listings:', err);
       grid.innerHTML = `<p style="text-align:center; color:red; grid-column: 1 / -1;">Could not load property listings.</p>`;
-      document.getElementById('total-found').textContent = '0 Matches Found';
-      setupPagination(0);
+      // Disable pagination on error
+      document.getElementById('pagination-container-top').innerHTML = '';
+      document.getElementById('pagination-container-bottom').innerHTML = '';
     }
   }
 
-  function renderPage() {
-    // --- SORTING ---
-    const REALTOR_OFFICE_KEY = '20211001133511324573000000';
-    const REALTOR_NAME = 'Garrett Schaede';
-
-    let sortedListings = [...allListings];
-
-    // user-selected sort
-    sortedListings.sort((a, b) => {
-      if (currentSort === 'PriceLowHigh') return (a.ListPrice || 0) - (b.ListPrice || 0);
-      if (currentSort === 'PriceHighLow') return (b.ListPrice || 0) - (a.ListPrice || 0);
-      // Default: RecentlyUpdated
-      return new Date(b.ModificationTimestamp) - new Date(a.ModificationTimestamp);
-    });
-
-    // featured sort
-    sortedListings.sort((a, b) => {
-      const isAFromOffice = a.ListOfficeKey === REALTOR_OFFICE_KEY;
-      const isBFromOffice = b.ListOfficeKey === REALTOR_OFFICE_KEY;
-
-      if (isAFromOffice && !isBFromOffice) return -1;
-      if (!isAFromOffice && isBFromOffice) return 1;
-
-      if (isAFromOffice && isBFromOffice) {
-        const agentNameA = (a.ListAgentFullName || "").trim().toLowerCase();
-        const agentNameB = (b.ListAgentFullName || "").trim().toLowerCase();
-        const isAFromRealtor = agentNameA.includes(REALTOR_NAME.toLowerCase());
-        const isBFromRealtor = agentNameB.includes(REALTOR_NAME.toLowerCase());
-        if (isAFromRealtor && !isBFromRealtor) return -1;
-        if (!isAFromRealtor && isBFromRealtor) return 1;
-      }
-      return 0;
-    });
-
-    // --- PAGINATION (client-side) ---
-    const totalItems = sortedListings.length;
-    const totalPages = Math.max(1, Math.ceil(totalItems / listingsPerPage));
-    if (currentPage > totalPages) currentPage = totalPages;
-
-    const startIndex = (currentPage - 1) * listingsPerPage;
-    const endIndex = startIndex + listingsPerPage;
-    const paginatedListings = sortedListings.slice(startIndex, endIndex);
-
-    displayListings(paginatedListings);
-    setupPagination(totalItems);
-    announcePage(totalPages);
-  }
-
+  // ----- RENDER LISTINGS (single page slice from server) -----
   function displayListings(listings) {
     const grid = document.getElementById('listings-grid');
     grid.innerHTML = '';
 
     if (!listings || listings.length === 0) {
-      grid.innerHTML = `<p style="text-align: center; grid-column: 1 / -1;">No properties found.</p>`;
+      grid.innerHTML = `<p style="text-align:center; grid-column: 1 / -1;">No properties found on this page.</p>`;
       return;
     }
 
@@ -298,17 +264,20 @@
         ? new Date(listing.ModificationTimestamp).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
         : 'N/A';
 
+      const living = listing.LivingArea != null ? Number(listing.LivingArea).toLocaleString() + ' sqft' : 'N/A';
+      const address = listing.UnparsedAddress || 'Address unavailable';
+
       const card = `
-        <a href="listing-details.html?listingKey=${encodeURIComponent(listing.ListingKey)}" class="property-card-link" aria-label="View details for ${listing.UnparsedAddress || 'this property'}">
+        <a href="listing-details.html?listingKey=${encodeURIComponent(listing.ListingKey)}" class="property-card-link" aria-label="View details for ${address}">
           <div class="property-card">
-            <img src="${imageUrl}" alt="Image of ${listing.UnparsedAddress || 'property'}" class="property-image" loading="lazy">
+            <img src="${imageUrl}" alt="Image of ${address}" class="property-image" loading="lazy">
             <div class="property-details">
               <div class="property-price">$${(listing.ListPrice || 0).toLocaleString()}</div>
-              <div class="property-address">${listing.UnparsedAddress || 'Address unavailable'}</div>
+              <div class="property-address">${address}</div>
               <div class="property-specs">
                 <span><i class="fas fa-bed" aria-hidden="true"></i> ${listing.BedroomsTotal ?? 0}</span>
                 <span><i class="fas fa-bath" aria-hidden="true"></i> ${listing.BathroomsTotalInteger ?? 0}</span>
-                <span><i class="fas fa-ruler-combined" aria-hidden="true"></i> ${listing.LivingArea != null ? Number(listing.LivingArea).toLocaleString() : 'N/A'} sqft</span>
+                <span><i class="fas fa-ruler-combined" aria-hidden="true"></i> ${living}</span>
               </div>
             </div>
             <div class="property-card-footer">
@@ -322,90 +291,91 @@
     });
   }
 
-  function setupPagination(totalItems) {
-    const topContainer = document.getElementById('pagination-container-top');
-    const bottomContainer = document.getElementById('pagination-container-bottom');
-    topContainer.innerHTML = '';
-    bottomContainer.innerHTML = '';
+  // ----- PAGINATION (server-side) -----
+  function setupPagination() {
+    const top = document.getElementById('pagination-container-top');
+    const bottom = document.getElementById('pagination-container-bottom');
+    top.innerHTML = ''; bottom.innerHTML = '';
 
-    const totalPages = Math.max(1, Math.ceil(totalItems / listingsPerPage));
+    const hasKnownTotal = Number.isFinite(totalCount) && totalCount > 0;
+    const totalPages = hasKnownTotal ? Math.max(1, Math.ceil(totalCount / limit)) : null;
 
-    if (totalPages <= 1) {
-      topContainer.style.display = 'none';
-      bottomContainer.style.display = 'none';
+    // Determine if there's a next page when total is unknown (fallback)
+    const hasNextWhenUnknown = !hasKnownTotal && (lastPageItems === limit);
+
+    // If we neither know total nor have more pages, hide pagination
+    if (!hasKnownTotal && currentPage === 1 && !hasNextWhenUnknown) {
+      top.style.display = 'none';
+      bottom.style.display = 'none';
+      document.getElementById('pagination-status').textContent = `Showing page ${currentPage}.`;
       return;
     }
-    topContainer.style.display = 'flex';
-    bottomContainer.style.display = 'flex';
+    top.style.display = 'flex';
+    bottom.style.display = 'flex';
 
-    const createLinkHTML = (page, text, isDisabled = false, isCurrent = false) => {
-      const label = text || page;
-      const classes = [];
-      if (isCurrent) classes.push('current-page');
-      if (isDisabled) classes.push('disabled');
-
-      if (isDisabled || isCurrent) {
-        return `<span class="${classes.join(' ')}" data-page="${page}" ${isCurrent ? 'aria-current="page"' : ''}>${label}</span>`;
+    const makeBtn = (page, label, disabled=false, current=false) => {
+      const cls = [];
+      if (current) cls.push('current-page');
+      if (disabled) cls.push('disabled');
+      if (disabled || current) {
+        return `<span class="${cls.join(' ')}" data-page="${page}" ${current ? 'aria-current="page"' : ''}>${label}</span>`;
       }
-      // Focusable & clickable (intercepted by JS)
-      return `<a href="#page-${page}" class="${classes.join(' ')}" data-page="${page}" aria-label="Go to page ${page}">${label}</a>`;
+      return `<a href="#page-${page}" class="${cls.join(' ')}" data-page="${page}" aria-label="Go to page ${page}">${label}</a>`;
     };
 
     let html = '';
-    // Previous
-    html += createLinkHTML(Math.max(1, currentPage - 1), 'Previous', currentPage === 1);
 
-    // Compact numbers with ellipses
-    const pages = [];
-    if (totalPages <= 7) {
-      for (let i = 1; i <= totalPages; i++) pages.push(i);
+    // Previous
+    const prevDisabled = currentPage <= 1;
+    html += makeBtn(currentPage - 1, 'Previous', prevDisabled);
+
+    // Page numbers (only if we know total)
+    if (hasKnownTotal) {
+      const pages = [];
+      if (totalPages <= 7) {
+        for (let i = 1; i <= totalPages; i++) pages.push(i);
+      } else {
+        pages.push(1);
+        if (currentPage > 3) pages.push('...');
+        if (currentPage > 2) pages.push(currentPage - 1);
+        if (currentPage > 1 && currentPage < totalPages) pages.push(currentPage);
+        if (currentPage < totalPages - 1) pages.push(currentPage + 1);
+        if (currentPage < totalPages - 2) pages.push('...');
+        pages.push(totalPages);
+      }
+
+      pages.forEach(p => {
+        if (p === '...') html += `<span class="disabled" aria-hidden="true">...</span>`;
+        else html += makeBtn(p, String(p), false, p === currentPage);
+      });
     } else {
-      pages.push(1);
-      if (currentPage > 3) pages.push('...');
-      if (currentPage > 2) pages.push(currentPage - 1);
-      if (currentPage > 1 && currentPage < totalPages) pages.push(currentPage);
-      if (currentPage < totalPages - 1) pages.push(currentPage + 1);
-      if (currentPage < totalPages - 2) pages.push('...');
-      pages.push(totalPages);
+      // Unknown total: show just "Page X"
+      html += `<span class="page-status" aria-hidden="true">Page ${currentPage}</span>`;
     }
 
-    pages.forEach(p => {
-      if (p === '...') {
-        html += `<span class="disabled" aria-hidden="true">...</span>`;
-      } else {
-        html += createLinkHTML(p, String(p), false, p === currentPage);
-      }
-    });
-
     // Next
-    html += createLinkHTML(Math.min(totalPages, currentPage + 1), 'Next', currentPage === totalPages);
+    const nextDisabled = hasKnownTotal ? (currentPage >= totalPages) : !hasNextWhenUnknown;
+    html += makeBtn(currentPage + 1, 'Next', nextDisabled);
 
     // Status
-    html += `<span class="page-status" aria-hidden="true">Page ${currentPage} of ${totalPages}</span>`;
+    const statusEl = document.getElementById('pagination-status');
+    statusEl.textContent = hasKnownTotal ? `Showing page ${currentPage} of ${totalPages}.` : `Showing page ${currentPage}.`;
 
-    // Write to both containers
-    topContainer.innerHTML = html;
-    bottomContainer.innerHTML = html;
+    top.innerHTML = html;
+    bottom.innerHTML = html;
 
-    const handleClick = (e) => {
+    const onClick = (e) => {
       const link = e.target.closest('a[data-page]');
-      if (!link) return; // ignore clicks on spans / disabled / ellipses
+      if (!link) return;
       e.preventDefault();
       const page = parseInt(link.dataset.page, 10);
       if (!Number.isNaN(page) && page !== currentPage) {
-        currentPage = page;
-        renderPage();
-        document.getElementById('listings-section').scrollIntoView({ behavior: 'smooth' });
+        loadPage(page);
       }
     };
 
-    topContainer.onclick = handleClick;
-    bottomContainer.onclick = handleClick;
-  }
-
-  function announcePage(totalPages) {
-    const status = document.getElementById('pagination-status');
-    status.textContent = `Showing page ${currentPage} of ${totalPages}.`;
+    top.onclick = onClick;
+    bottom.onclick = onClick;
   }
 </script>
 </body>
